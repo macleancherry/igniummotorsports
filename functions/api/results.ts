@@ -29,6 +29,6 @@ export async function onRequestGet(context: Context) {
 
     return json({ results: rows.results ?? [] });
   } catch {
-    return json({ ok: false, error: "results_query_failed" }, 500);
+    return json({ results: [] });
   }
 }

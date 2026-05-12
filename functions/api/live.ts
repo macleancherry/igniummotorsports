@@ -53,7 +53,7 @@ export async function onRequestGet(context: Context) {
 
     return json({ event, drivers: drivers.results ?? [] });
   } catch {
-    return json({ ok: false, error: "live_query_failed" }, 500);
+    return json({ event: null, drivers: [] });
   }
 }
 
