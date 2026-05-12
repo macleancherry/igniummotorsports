@@ -28,6 +28,7 @@ type GridRepResult = {
 };
 
 const FRESHNESS_WINDOW_MS = 5 * 60 * 1000;
+const DEFAULT_GRIDREP_API_BASE_URL = "https://gridrep.pages.dev";
 
 function isFresh(timestamp: string | null | undefined): boolean {
   if (!timestamp) return false;
@@ -39,7 +40,7 @@ function isFresh(timestamp: string | null | undefined): boolean {
 }
 
 async function fetchGridRepResults(context: Context, customerId: number, limit: number) {
-  const baseUrl = (context.env.GRIDREP_API_BASE_URL ?? "").replace(/\/$/, "");
+  const baseUrl = (context.env.GRIDREP_API_BASE_URL ?? DEFAULT_GRIDREP_API_BASE_URL).replace(/\/$/, "");
   if (!baseUrl) {
     return [];
   }

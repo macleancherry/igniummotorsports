@@ -8,5 +8,5 @@ database_name = "ignium_motorsport"
 database_id = "fff2a18d-840a-45ca-b229-6e7b95cd99d1"
 
 [vars]
-GRIDREP_API_BASE_URL = ""
-GRIDREP_TEAM_DRIVER_CUSTOMER_IDS = ""
+GRIDREP_API_BASE_URL = "https://gridrep.pages.dev"
+GRIDREP_TEAM_DRIVER_CUSTOMER_IDS = "138517,473111,552746,333681,233083,503427,220175,86491"
