@@ -42,7 +42,6 @@ export function DriverProfilePage() {
         <h1>{driver.name}</h1>
         <p>#{driver.raceNumber ?? "-"} • {driver.country ?? "Unknown"}</p>
         <p>{driver.bio}</p>
-        <p>iRacing customer ID: {driver.iracingCustomerId ?? "N/A"}</p>
         <div className="grid cards-3">
           <article className="card">
             <h3>Career Snapshot</h3>
