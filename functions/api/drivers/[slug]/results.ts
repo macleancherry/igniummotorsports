@@ -273,7 +273,8 @@ export async function onRequestGet(context: Context) {
     return Date.parse(candidate) > Date.parse(latest) ? candidate : latest;
   }, null);
 
-  if ((!driver.iracingCustomerId || isFresh(newestLocalTimestamp)) && localResults.length > 0) {
+  const hasEnoughLocalResults = localResults.length >= limit;
+  if ((!driver.iracingCustomerId || (isFresh(newestLocalTimestamp) && hasEnoughLocalResults)) && localResults.length > 0) {
     return json({ driver, results: localResults });
   }
 
