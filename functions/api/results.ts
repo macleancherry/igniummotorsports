@@ -84,12 +84,35 @@ async function loadLocalResults(db: D1Database, limit: number) {
               d.slug as driverSlug
        FROM results r
        LEFT JOIN drivers d ON d.id = r.driver_id
+            WHERE r.source = 'gridrep'
        ORDER BY datetime(r.completed_at) DESC, r.id DESC
        LIMIT ?`
     )
     .bind(limit)
     .all();
 }
+
+          async function loadAnyLocalResults(db: D1Database, limit: number) {
+            return db
+              .prepare(
+                `SELECT r.id, r.source, r.source_result_id as sourceResultId, r.iracing_customer_id as iracingCustomerId,
+              r.subsession_id as subsessionId, r.driver_name as driverName, r.team_name as teamName, r.series,
+              r.track, r.car, r.car_class as carClass, r.qualifying_position as qualifyingPosition,
+              r.start_position as startPosition, r.finish_position as finishPosition,
+              r.class_position as classPosition, r.field_size as fieldSize, r.class_field_size as classFieldSize,
+              r.laps_completed as lapsCompleted, r.best_lap as bestLap, r.incidents,
+              r.strength_of_field as strengthOfField, r.irating_change as iratingChange,
+              r.license_change as licenseChange, r.official, r.result_url as resultUrl,
+              r.completed_at as completedAt, r.updated_at as updatedAt, r.created_at as createdAt,
+              d.slug as driverSlug
+            FROM results r
+            LEFT JOIN drivers d ON d.id = r.driver_id
+            ORDER BY datetime(r.completed_at) DESC, r.id DESC
+            LIMIT ?`
+              )
+              .bind(limit)
+              .all();
+          }
 
 async function fetchRemoteResults(context: Context, limit: number) {
   const customerIds = (context.env.GRIDREP_TEAM_DRIVER_CUSTOMER_IDS ?? "").trim();
@@ -260,7 +283,12 @@ export async function onRequestGet(context: Context) {
       return json({ results: remoteResults });
     }
 
-    return json({ results: localResults });
+    if (localResults.length > 0) {
+      return json({ results: localResults });
+    }
+
+    const fallbackRows = await loadAnyLocalResults(db, limit);
+    return json({ results: fallbackRows.results ?? [] });
   } catch {
     return json({ results: [] });
   }
