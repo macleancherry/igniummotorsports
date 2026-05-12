@@ -35,25 +35,44 @@ export function HomePage() {
       <section className="hero">
         <div>
           <p className="kicker">iRacing Endurance Team</p>
-          <h1>Precision. Patience. Pace.</h1>
+          <h1>Ignite Your PASSION</h1>
           <p>
-            Ignium Motorsport runs every event like a control room operation with clean communication, disciplined stints and ruthless consistency.
+            Ignium Motorsport competes on three core values: Hard Work, Dedication, and Positivity.
+            We race with discipline, integrity, and the drive to excel.
           </p>
           <div className="link-row">
             <Link className="btn-primary" to="/live">
               Open Live Race Control
             </Link>
-            <Link className="btn-ghost" to="/results">
-              View Team Results
+            <Link className="btn-ghost" to="/about">
+              Learn Our Values
             </Link>
           </div>
         </div>
         <aside className="hero-aside">
-          <p className="kicker">Current Focus</p>
-          <p><strong>Series:</strong> IMSA / GT Endurance</p>
-          <p><strong>Identity:</strong> Blue-line control, low-error racing</p>
-          <p><strong>Priority:</strong> Consistency over chaos</p>
+          <p className="kicker">What We Do</p>
+          <p><strong>Practice:</strong> Disciplined preparation and continuous improvement</p>
+          <p><strong>Conduct:</strong> Professional, sportsmanlike racing always</p>
+          <p><strong>Growth:</strong> Learn from every race, positive and negative</p>
         </aside>
+      </section>
+
+      <section className="values-highlight">
+        <div className="value-highlight-card">
+          <span className="value-icon">🔨</span>
+          <h3>Hard Work</h3>
+          <p>We invest the practice needed to excel</p>
+        </div>
+        <div className="value-highlight-card">
+          <span className="value-icon">💪</span>
+          <h3>Dedication</h3>
+          <p>We maintain professional standards always</p>
+        </div>
+        <div className="value-highlight-card">
+          <span className="value-icon">⚡</span>
+          <h3>Positivity</h3>
+          <p>We turn adversity into fuel for improvement</p>
+        </div>
       </section>
 
       {liveEvent?.status === "live" && (
