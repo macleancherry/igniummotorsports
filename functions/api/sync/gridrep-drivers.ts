@@ -71,6 +71,7 @@ export async function onRequestPost(context: Context) {
         "Content-Type": "application/json",
         Origin: requestOrigin,
         Referer: `${requestOrigin}/`,
+        "X-Ignium-Origin": requestOrigin,
       },
     });
 

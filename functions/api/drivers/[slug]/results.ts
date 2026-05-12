@@ -50,6 +50,7 @@ async function fetchGridRepResults(context: Context, customerId: number, limit: 
     Accept: "application/json",
     Origin: requestOrigin,
     Referer: `${requestOrigin}/`,
+    "X-Ignium-Origin": requestOrigin,
   };
 
   if (context.env.GRIDREP_API_TOKEN) {
