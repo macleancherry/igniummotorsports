@@ -43,6 +43,30 @@ export function DriverProfilePage() {
         <p>#{driver.raceNumber ?? "-"} • {driver.country ?? "Unknown"}</p>
         <p>{driver.bio}</p>
         <p>iRacing customer ID: {driver.iracingCustomerId ?? "N/A"}</p>
+        <div className="grid cards-3">
+          <article className="card">
+            <h3>Career Snapshot</h3>
+            <p>Sessions: {driver.totalSessions ?? 0}</p>
+            <p>Results tracked: {driver.totalResults ?? 0}</p>
+            <p>Average finish: {driver.avgFinishPosition ?? "-"}</p>
+          </article>
+          <article className="card">
+            <h3>Highlights</h3>
+            <p>Wins: {driver.wins ?? 0}</p>
+            <p>Podiums: {driver.podiums ?? 0}</p>
+            <p>Top 5s: {driver.topFives ?? 0}</p>
+            <p>Best finish: P{driver.bestFinishPosition ?? "-"}</p>
+          </article>
+          <article className="card">
+            <h3>Current Form</h3>
+            <p>Latest series: {driver.latestSeries ?? "-"}</p>
+            <p>Latest track: {driver.latestTrack ?? "-"}</p>
+            <p>Latest finish: P{driver.latestFinishPosition ?? "-"}</p>
+            <p>Favorite track: {driver.favoriteTrack ?? "-"}</p>
+            {driver.irating ? <p>iRating: {driver.irating}</p> : null}
+            {driver.licenseClass ? <p>License: {driver.licenseClass}</p> : null}
+          </article>
+        </div>
         <div className="link-row">
           {driver.twitchUrl && <a href={driver.twitchUrl} target="_blank" rel="noreferrer">Twitch</a>}
           {driver.youtubeUrl && <a href={driver.youtubeUrl} target="_blank" rel="noreferrer">YouTube</a>}

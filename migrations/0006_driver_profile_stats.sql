@@ -1,0 +1,6 @@
+ALTER TABLE drivers ADD COLUMN avg_finish_position REAL;
+ALTER TABLE drivers ADD COLUMN wins INTEGER DEFAULT 0;
+ALTER TABLE drivers ADD COLUMN podiums INTEGER DEFAULT 0;
+ALTER TABLE drivers ADD COLUMN top_fives INTEGER DEFAULT 0;
+ALTER TABLE drivers ADD COLUMN favorite_track TEXT;
+ALTER TABLE drivers ADD COLUMN favorite_series TEXT;

@@ -6,12 +6,20 @@ type DriverStat = {
   display_name: string;
   last_seen_at: string | null;
   total_sessions: number;
+  avg_finish_position: number | null;
+  wins: number;
+  podiums: number;
+  top_fives: number;
   latest_session_id: string | null;
   latest_series: string | null;
   latest_track: string | null;
   latest_finish_position: number | null;
   best_finish_position: number | null;
+  favorite_track: string | null;
+  favorite_series: string | null;
   total_results: number;
+  irating: number | null;
+  license_class: string | null;
 };
 
 const DEFAULT_GRIDREP_API_BASE_URL = "https://gridrep.pages.dev";
@@ -108,22 +116,38 @@ export async function onRequestPost(context: Context) {
             `UPDATE drivers SET
              last_seen_at = ?,
              total_sessions = ?,
+             avg_finish_position = ?,
+             wins = ?,
+             podiums = ?,
+             top_fives = ?,
              latest_series = ?,
              latest_track = ?,
              latest_finish_position = ?,
              best_finish_position = ?,
+             favorite_track = ?,
+             favorite_series = ?,
              total_results = ?,
+             irating = ?,
+             license_class = ?,
              gridrep_synced_at = ?
              WHERE id = ?`
           )
           .bind(
             stat.last_seen_at,
             stat.total_sessions,
+            stat.avg_finish_position,
+            stat.wins,
+            stat.podiums,
+            stat.top_fives,
             stat.latest_series,
             stat.latest_track,
             stat.latest_finish_position,
             stat.best_finish_position,
+            stat.favorite_track,
+            stat.favorite_series,
             stat.total_results,
+            stat.irating,
+            stat.license_class,
             now,
             driver.id
           )

@@ -11,6 +11,22 @@ export type Driver = {
   twitchUrl?: string | null;
   youtubeUrl?: string | null;
   active?: number;
+  lastSeenAt?: string | null;
+  totalSessions?: number | null;
+  avgFinishPosition?: number | null;
+  wins?: number | null;
+  podiums?: number | null;
+  topFives?: number | null;
+  latestSeries?: string | null;
+  latestTrack?: string | null;
+  latestFinishPosition?: number | null;
+  bestFinishPosition?: number | null;
+  favoriteTrack?: string | null;
+  favoriteSeries?: string | null;
+  totalResults?: number | null;
+  irating?: number | null;
+  licenseClass?: string | null;
+  gridrepSyncedAt?: string | null;
 };
 
 export type ResultRow = {

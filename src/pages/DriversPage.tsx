@@ -38,6 +38,13 @@ export function DriversPage() {
             <h2>{driver.name}</h2>
             <p>#{driver.raceNumber ?? "-"} • {driver.country ?? "Unknown"}</p>
             <p>{driver.bio}</p>
+            <p>
+              Sessions {driver.totalSessions ?? 0} • Wins {driver.wins ?? 0} • Podiums {driver.podiums ?? 0}
+            </p>
+            <p>
+              Best finish P{driver.bestFinishPosition ?? "-"}
+              {driver.irating ? ` • iRating ${driver.irating}` : ""}
+            </p>
             <div className="link-row">
               {driver.twitchUrl && <a href={driver.twitchUrl} target="_blank" rel="noreferrer">Twitch</a>}
               {driver.youtubeUrl && <a href={driver.youtubeUrl} target="_blank" rel="noreferrer">YouTube</a>}
