@@ -69,11 +69,14 @@ async function fetchGridRepResults(context: Context, customerId: number, limit: 
   }
 
   const data = (await response.json()) as { results?: GridRepResult[] };
-  return {
-    rows: (data.results ?? []).map((row, index) => ({
+  return { rows: data.results ?? [] };
+}
+
+function mapGridRepRowsForResponse(rows: GridRepResult[], customerId: number) {
+  return rows.map((row, index) => ({
     id: -(index + 1),
     source: "gridrep",
-    sourceResultId: row.subsessionId ?? null,
+    sourceResultId: row.subsessionId && row.customerId ? `${row.subsessionId}:${row.customerId}` : row.subsessionId ?? null,
     iracingCustomerId: row.customerId ?? customerId,
     subsessionId: row.subsessionId ?? null,
     driverName: row.driverName ?? null,
@@ -94,11 +97,10 @@ async function fetchGridRepResults(context: Context, customerId: number, limit: 
     strengthOfField: row.strengthOfField ?? null,
     iratingChange: row.iratingChange ?? null,
     licenseChange: row.licenseChange ?? null,
-    official: row.official ? 1 : 0,
+    official: row.official === null || row.official === undefined ? null : row.official ? 1 : 0,
     resultUrl: row.resultUrl ?? null,
     completedAt: row.completedAt ?? null,
-    })),
-  };
+  }));
 }
 
 async function loadLocalResults(db: D1Database, driverId: number, limit: number) {
@@ -295,7 +297,7 @@ export async function onRequestGet(context: Context) {
       // Fall back to the freshly fetched upstream rows below.
     }
 
-    return json({ driver, results: remote.rows });
+    return json({ driver, results: mapGridRepRowsForResponse(remote.rows, driver.iracingCustomerId) });
   }
 
   return json({ driver, results: localResults });
