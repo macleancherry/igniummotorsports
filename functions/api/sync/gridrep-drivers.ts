@@ -15,6 +15,7 @@ type DriverStat = {
 };
 
 const DEFAULT_GRIDREP_API_BASE_URL = "https://gridrep.pages.dev";
+const IGNIUM_PUBLIC_ORIGIN = "https://igniummotorsports.pages.dev";
 
 export async function onRequestPost(context: Context) {
   const originError = requireSameOrigin(context);
@@ -60,7 +61,6 @@ export async function onRequestPost(context: Context) {
 
     // Call GridRep stats endpoint
     const baseUrl = (context.env.GRIDREP_API_BASE_URL ?? DEFAULT_GRIDREP_API_BASE_URL).replace(/\/$/, "");
-    const requestOrigin = new URL(context.request.url).origin;
     const gridrepUrl = `${baseUrl}/api/integrations/ignium/drivers-stats?customerIds=${customerIds.join(
       ","
     )}&limit=100`;
@@ -69,9 +69,9 @@ export async function onRequestPost(context: Context) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Origin: requestOrigin,
-        Referer: `${requestOrigin}/`,
-        "X-Ignium-Origin": requestOrigin,
+        Origin: IGNIUM_PUBLIC_ORIGIN,
+        Referer: `${IGNIUM_PUBLIC_ORIGIN}/`,
+        "X-Ignium-Origin": IGNIUM_PUBLIC_ORIGIN,
       },
     });
 

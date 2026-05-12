@@ -29,6 +29,7 @@ type GridRepResult = {
 
 const FRESHNESS_WINDOW_MS = 5 * 60 * 1000;
 const DEFAULT_GRIDREP_API_BASE_URL = "https://gridrep.pages.dev";
+const IGNIUM_PUBLIC_ORIGIN = "https://igniummotorsports.pages.dev";
 
 function isFresh(timestamp: string | null | undefined): boolean {
   if (!timestamp) return false;
@@ -45,12 +46,11 @@ async function fetchGridRepResults(context: Context, customerId: number, limit: 
     return [];
   }
 
-  const requestOrigin = new URL(context.request.url).origin;
   const headers: Record<string, string> = {
     Accept: "application/json",
-    Origin: requestOrigin,
-    Referer: `${requestOrigin}/`,
-    "X-Ignium-Origin": requestOrigin,
+    Origin: IGNIUM_PUBLIC_ORIGIN,
+    Referer: `${IGNIUM_PUBLIC_ORIGIN}/`,
+    "X-Ignium-Origin": IGNIUM_PUBLIC_ORIGIN,
   };
 
   if (context.env.GRIDREP_API_TOKEN) {
