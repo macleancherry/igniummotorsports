@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, NavLink, Route, Routes } from "react-router-dom";
 import { AboutPage } from "./pages/AboutPage";
 import { DriverProfilePage } from "./pages/DriverProfilePage";
@@ -18,6 +19,36 @@ const navItems = [
 ];
 
 export default function App() {
+  // Sync driver stats from GridRep on each page load
+  useEffect(() => {
+    const syncDriverStats = async () => {
+      try {
+        const adminToken = sessionStorage.getItem("admin_token");
+        if (!adminToken) return; // Only sync if admin token is available
+        
+        const response = await fetch("/api/sync/gridrep-drivers", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${adminToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.ok) {
+            console.log(`✓ Driver stats synced: ${data.updated} updated`);
+          }
+        }
+      } catch (err) {
+        // Silently fail - don't interrupt page load
+        console.debug("Driver stats sync skipped:", err instanceof Error ? err.message : "Unknown error");
+      }
+    };
+    
+    syncDriverStats();
+  }, []);
+
   return (
     <div className="site-shell">
       <header className="site-header">
