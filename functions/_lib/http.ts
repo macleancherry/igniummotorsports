@@ -44,6 +44,22 @@ export function requireBearer(context: Context, expectedToken: string | undefine
   return null;
 }
 
+export function requireDb(context: Context): D1Database | Response {
+  const db = (context.env as { DB?: D1Database }).DB;
+  if (!db) {
+    return json(
+      {
+        ok: false,
+        error: "missing_db_binding",
+        message: "D1 binding 'DB' is not configured for this environment.",
+      },
+      500
+    );
+  }
+
+  return db;
+}
+
 export function toInt(value: string | null | undefined, fallback: number): number {
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) {
