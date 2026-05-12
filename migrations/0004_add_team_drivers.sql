@@ -1,0 +1,22 @@
+-- Add Ignium Motorsport team members
+INSERT OR IGNORE INTO drivers (name, slug, handle, country, active, created_at, updated_at) VALUES
+('Brad Benigfield', 'brad-benigfield', 'brad-benigfield', NULL, 1, datetime('now'), datetime('now')),
+('Chris Young', 'chris-young', 'chris-young', NULL, 1, datetime('now'), datetime('now')),
+('Daniel Barrett', 'daniel-barrett', 'daniel-barrett', NULL, 1, datetime('now'), datetime('now')),
+('Dawid Melnarowicz', 'dawid-melnarowicz', 'dawid-melnarowicz', NULL, 1, datetime('now'), datetime('now')),
+('Edward Knight', 'edward-knight', 'edward-knight', NULL, 1, datetime('now'), datetime('now')),
+('Ginger Slavenburg', 'ginger-slavenburg', 'ginger-slavenburg', NULL, 1, datetime('now'), datetime('now')),
+('Håkon Grebstad', 'hakon-grebstad', 'hakon-grebstad', NULL, 1, datetime('now'), datetime('now')),
+('Jaco Boshoff', 'jaco-boshoff', 'jaco-boshoff', NULL, 1, datetime('now'), datetime('now')),
+('Joel Farley', 'joel-farley', 'joel-farley', NULL, 1, datetime('now'), datetime('now')),
+('John Buwalda', 'john-buwalda', 'john-buwalda', NULL, 1, datetime('now'), datetime('now')),
+('Krzysztof Borys', 'krzysztof-borys', 'krzysztof-borys', NULL, 1, datetime('now'), datetime('now')),
+('Mac Cherry', 'mac-cherry', 'mac-cherry', NULL, 1, datetime('now'), datetime('now')),
+('Martin Dalsrud', 'martin-dalsrud', 'martin-dalsrud', NULL, 1, datetime('now'), datetime('now')),
+('Matt B', 'matt-b', 'matt-b', NULL, 1, datetime('now'), datetime('now')),
+('Mike Ninkranz', 'mike-ninkranz', 'mike-ninkranz', NULL, 1, datetime('now'), datetime('now')),
+('neil stephenson', 'neil-stephenson', 'neil-stephenson', NULL, 1, datetime('now'), datetime('now')),
+('Ryan Hirons', 'ryan-hirons', 'ryan-hirons', NULL, 1, datetime('now'), datetime('now')),
+('Sam Bolen', 'sam-bolen', 'sam-bolen', NULL, 1, datetime('now'), datetime('now')),
+('Simon Whitten', 'simon-whitten', 'simon-whitten', NULL, 1, datetime('now'), datetime('now')),
+('steve norman', 'steve-norman', 'steve-norman', NULL, 1, datetime('now'), datetime('now'));
