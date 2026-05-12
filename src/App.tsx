@@ -23,17 +23,13 @@ export default function App() {
   useEffect(() => {
     const syncDriverStats = async () => {
       try {
-        const adminToken = sessionStorage.getItem("admin_token");
-        if (!adminToken) return; // Only sync if admin token is available
-        
         const response = await fetch("/api/sync/gridrep-drivers", {
           method: "POST",
           headers: {
-            "Authorization": `Bearer ${adminToken}`,
             "Content-Type": "application/json",
           },
         });
-        
+
         if (response.ok) {
           const data = await response.json();
           if (data.ok) {

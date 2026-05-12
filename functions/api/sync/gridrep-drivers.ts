@@ -1,6 +1,5 @@
-import { json, requireBearer, requireDb } from "../../_lib/http";
+import { json, requireDb, requireSameOrigin } from "../../_lib/http";
 import type { Context } from "../../_lib/types";
-import { getMissingGridRepConfig } from "../../_lib/gridrep";
 
 type DriverStat = {
   iracing_customer_id: number;
@@ -16,16 +15,18 @@ type DriverStat = {
 };
 
 export async function onRequestPost(context: Context) {
-  // Require admin token for auth
-  const authError = requireBearer(context, context.env.ADMIN_TOKEN);
-  if (authError) return authError;
+  const originError = requireSameOrigin(context);
+  if (originError) return originError;
 
   // Validate DB binding
   const db = requireDb(context);
   if (db instanceof Response) return db;
 
   // Check GridRep config
-  const missing = getMissingGridRepConfig(context.env);
+  const missing: string[] = [];
+  if (!context.env.GRIDREP_API_BASE_URL) {
+    missing.push("GRIDREP_API_BASE_URL");
+  }
   if (missing.length > 0) {
     return json(
       {
@@ -60,6 +61,7 @@ export async function onRequestPost(context: Context) {
 
     // Call GridRep stats endpoint
     const baseUrl = (context.env.GRIDREP_API_BASE_URL ?? "").replace(/\/$/, "");
+    const requestOrigin = new URL(context.request.url).origin;
     const gridrepUrl = `${baseUrl}/api/integrations/ignium/drivers-stats?customerIds=${customerIds.join(
       ","
     )}&limit=100`;
@@ -67,8 +69,9 @@ export async function onRequestPost(context: Context) {
     const gridrepResponse = await fetch(gridrepUrl, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${context.env.GRIDREP_API_TOKEN}`,
         "Content-Type": "application/json",
+        Origin: requestOrigin,
+        Referer: `${requestOrigin}/`,
       },
     });
 

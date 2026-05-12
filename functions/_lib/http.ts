@@ -44,6 +44,33 @@ export function requireBearer(context: Context, expectedToken: string | undefine
   return null;
 }
 
+function parseOriginHeader(value: string | null): string | null {
+  if (!value) return null;
+
+  try {
+    return new URL(value).origin;
+  } catch {
+    return null;
+  }
+}
+
+export function requireSameOrigin(context: Context): Response | null {
+  const requestOrigin = new URL(context.request.url).origin;
+  const origin = parseOriginHeader(context.request.headers.get("origin"));
+  const referer = parseOriginHeader(context.request.headers.get("referer"));
+  const fetchSite = (context.request.headers.get("sec-fetch-site") ?? "").toLowerCase();
+
+  if (origin === requestOrigin || referer === requestOrigin) {
+    return null;
+  }
+
+  if ((fetchSite === "same-origin" || fetchSite === "same-site") && !origin && !referer) {
+    return null;
+  }
+
+  return json({ ok: false, error: "forbidden_origin" }, 403);
+}
+
 export function requireDb(context: Context): D1Database | Response {
   const db = (context.env as { DB?: D1Database }).DB;
   if (!db) {
