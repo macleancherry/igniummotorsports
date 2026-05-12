@@ -88,6 +88,10 @@ export function requireDb(context: Context): D1Database | Response {
 }
 
 export function toInt(value: string | null | undefined, fallback: number): number {
+  if (value === null || value === undefined || value.trim() === "") {
+    return fallback;
+  }
+
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) {
     return fallback;
