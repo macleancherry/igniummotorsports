@@ -4,7 +4,7 @@ compatibility_date = "2026-05-12"
 [[d1_databases]]
 binding = "DB"
 database_name = "ignium_motorsport"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "fff2a18d-840a-45ca-b229-6e7b95cd99d1"
 
 [vars]
 GRIDREP_API_BASE_URL = ""
