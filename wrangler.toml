@@ -1,0 +1,11 @@
+name = "ignium-motorsport"
+compatibility_date = "2026-05-12"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ignium_motorsport"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[vars]
+GRIDREP_API_BASE_URL = ""
+GRIDREP_TEAM_DRIVER_CUSTOMER_IDS = ""

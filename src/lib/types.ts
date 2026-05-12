@@ -1,0 +1,88 @@
+export type Driver = {
+  id: number;
+  name: string;
+  slug: string;
+  handle?: string | null;
+  iracingCustomerId?: number | null;
+  raceNumber?: string | null;
+  country?: string | null;
+  bio?: string | null;
+  avatarUrl?: string | null;
+  twitchUrl?: string | null;
+  youtubeUrl?: string | null;
+  active?: number;
+};
+
+export type ResultRow = {
+  id: number;
+  source: string;
+  sourceResultId?: string | null;
+  iracingCustomerId?: number | null;
+  subsessionId?: string | null;
+  driverName?: string | null;
+  driverSlug?: string | null;
+  teamName?: string | null;
+  series?: string | null;
+  track?: string | null;
+  car?: string | null;
+  carClass?: string | null;
+  qualifyingPosition?: number | null;
+  startPosition?: number | null;
+  finishPosition?: number | null;
+  classPosition?: number | null;
+  fieldSize?: number | null;
+  classFieldSize?: number | null;
+  lapsCompleted?: number | null;
+  bestLap?: string | null;
+  incidents?: number | null;
+  strengthOfField?: number | null;
+  iratingChange?: number | null;
+  licenseChange?: string | null;
+  official?: number | null;
+  resultUrl?: string | null;
+  completedAt?: string | null;
+};
+
+export type NewsPost = {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt?: string | null;
+  bodyMarkdown?: string | null;
+  coverImageUrl?: string | null;
+  author?: string | null;
+  publishedAt?: string | null;
+  createdAt?: string | null;
+};
+
+export type LiveEvent = {
+  id: number;
+  title: string;
+  slug: string;
+  teamName?: string | null;
+  series?: string | null;
+  track?: string | null;
+  carClass?: string | null;
+  car?: string | null;
+  startTime?: string | null;
+  status: "scheduled" | "live" | "finished";
+  timingUrl?: string | null;
+  streamUrl?: string | null;
+  notes?: string | null;
+};
+
+export type LiveTimingRow = {
+  id: number;
+  eventId: number;
+  carNumber?: string | null;
+  driverName: string;
+  position?: number | null;
+  classPosition?: number | null;
+  lap?: number | null;
+  lastLap?: string | null;
+  bestLap?: string | null;
+  gap?: string | null;
+  interval?: string | null;
+  pitStatus?: string | null;
+  streamUrl?: string | null;
+};

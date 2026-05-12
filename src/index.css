@@ -1,0 +1,272 @@
+:root {
+  --bg: #0b1118;
+  --bg-panel: #121c28;
+  --bg-panel-alt: #172334;
+  --text: #dce6f2;
+  --muted: #8ea1b8;
+  --line: #2a3a50;
+  --accent: #f25f30;
+  --accent-2: #ff9c5a;
+  --ok: #22c55e;
+
+  font-family: "Barlow", "Segoe UI", sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at top left, #13263d 0%, var(--bg) 45%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background: linear-gradient(135deg, #090f16 0%, #0b1118 60%, #101a25 100%);
+}
+
+a {
+  color: #ffd9c9;
+}
+
+a:hover {
+  color: #fff;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.site-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(18, 28, 40, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.brand-mark {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--accent), var(--accent-2));
+  color: #111;
+}
+
+.top-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.top-nav a {
+  text-decoration: none;
+  color: var(--muted);
+  padding: 0.4rem 0.55rem;
+  border-radius: 8px;
+}
+
+.top-nav a.is-active {
+  background: #22344c;
+  color: var(--text);
+}
+
+.main-content {
+  margin-top: 1rem;
+}
+
+.page-wrap {
+  display: grid;
+  gap: 1rem;
+}
+
+.hero {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  background: linear-gradient(120deg, rgba(242, 95, 48, 0.2), rgba(15, 31, 50, 0.4));
+  animation: reveal 500ms ease;
+}
+
+.kicker {
+  color: var(--accent-2);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+}
+
+.btn-primary {
+  display: inline-block;
+  margin-top: 0.8rem;
+  background: linear-gradient(145deg, var(--accent), var(--accent-2));
+  color: #111;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1rem;
+  background: var(--bg-panel);
+}
+
+.panel-live {
+  border-color: #22543d;
+  background: linear-gradient(130deg, rgba(34, 197, 94, 0.15), rgba(18, 28, 40, 0.9));
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.cards-3 {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.card {
+  border: 1px solid #253a55;
+  border-radius: 12px;
+  padding: 0.9rem;
+  background: var(--bg-panel-alt);
+}
+
+.avatar {
+  width: 100%;
+  max-width: 88px;
+  border-radius: 50%;
+}
+
+.stack {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.prose {
+  line-height: 1.6;
+}
+
+.link-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.error {
+  color: #ff8b8b;
+}
+
+.results-cards {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.result-card {
+  border: 1px solid #274260;
+  border-radius: 12px;
+  padding: 0.85rem;
+  background: #132133;
+}
+
+.lineup {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.lineup-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #20334b;
+  padding-bottom: 0.4rem;
+}
+
+.status-pill {
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+}
+
+.status-scheduled {
+  background: #30445f;
+}
+
+.status-live {
+  background: #14532d;
+}
+
+.status-finished {
+  background: #4b5563;
+}
+
+.timing-table-wrap {
+  overflow-x: auto;
+}
+
+.timing-table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+}
+
+.timing-table th,
+.timing-table td {
+  border-bottom: 1px solid #29405d;
+  padding: 0.5rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

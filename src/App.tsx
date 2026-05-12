@@ -1,0 +1,51 @@
+import { Link, NavLink, Route, Routes } from "react-router-dom";
+import { AboutPage } from "./pages/AboutPage";
+import { DriverProfilePage } from "./pages/DriverProfilePage";
+import { DriversPage } from "./pages/DriversPage";
+import { HomePage } from "./pages/HomePage";
+import { LivePage } from "./pages/LivePage";
+import { NewsArticlePage } from "./pages/NewsArticlePage";
+import { NewsPage } from "./pages/NewsPage";
+import { ResultsPage } from "./pages/ResultsPage";
+
+const navItems = [
+  { to: "/", label: "Home" },
+  { to: "/about", label: "About" },
+  { to: "/news", label: "News" },
+  { to: "/drivers", label: "Drivers" },
+  { to: "/results", label: "Results" },
+  { to: "/live", label: "Live Race Control" },
+];
+
+export default function App() {
+  return (
+    <div className="site-shell">
+      <header className="site-header">
+        <Link className="brand" to="/">
+          <span className="brand-mark">IG</span>
+          <span>Ignium Motorsport</span>
+        </Link>
+        <nav className="top-nav" aria-label="Main navigation">
+          {navItems.map((item) => (
+            <NavLink key={item.to} to={item.to} className={({ isActive }) => (isActive ? "is-active" : "")} end={item.to === "/"}>
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+      </header>
+
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/news" element={<NewsPage />} />
+          <Route path="/news/:slug" element={<NewsArticlePage />} />
+          <Route path="/drivers" element={<DriversPage />} />
+          <Route path="/drivers/:slug" element={<DriverProfilePage />} />
+          <Route path="/results" element={<ResultsPage />} />
+          <Route path="/live" element={<LivePage />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
