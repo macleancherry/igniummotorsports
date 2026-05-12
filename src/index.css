@@ -417,6 +417,8 @@ p {
   border-collapse: collapse;
 }
 
+.timing-table th,
+.timing-table td {
   border-bottom: 1px solid #355a84;
   padding: 0.52rem;
   text-align: left;
