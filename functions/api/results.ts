@@ -252,6 +252,15 @@ export async function onRequestGet(context: Context) {
   try {
     const rows = await loadLocalResults(db, limit);
     const localResults = rows.results ?? [];
+    const hasIncompleteGridrepDetails = localResults.some((row) =>
+      row.source === "gridrep" &&
+      (
+        row.startPosition === null ||
+        row.classPosition === null ||
+        row.incidents === null ||
+        row.bestLap === null
+      )
+    );
     const newestLocalTimestamp = localResults.reduce<string | null>((latest, row) => {
       const candidate = typeof row.updatedAt === "string" && row.updatedAt.length > 0
         ? row.updatedAt
@@ -263,7 +272,7 @@ export async function onRequestGet(context: Context) {
       return Date.parse(candidate) > Date.parse(latest) ? candidate : latest;
     }, null);
 
-    if (localResults.length > 0 && isFresh(newestLocalTimestamp)) {
+    if (localResults.length > 0 && isFresh(newestLocalTimestamp) && !hasIncompleteGridrepDetails) {
       return json({ results: localResults });
     }
 

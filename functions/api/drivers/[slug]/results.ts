@@ -263,6 +263,15 @@ export async function onRequestGet(context: Context) {
   const results = await loadLocalResults(db, driver.id, limit);
 
   const localResults = results.results ?? [];
+  const hasIncompleteGridrepDetails = localResults.some((row) =>
+    row.source === "gridrep" &&
+    (
+      row.startPosition === null ||
+      row.classPosition === null ||
+      row.incidents === null ||
+      row.bestLap === null
+    )
+  );
   const newestLocalTimestamp = localResults.reduce<string | null>((latest, row) => {
     const candidate = typeof row.updatedAt === "string" && row.updatedAt.length > 0
       ? row.updatedAt
@@ -276,7 +285,10 @@ export async function onRequestGet(context: Context) {
   }, null);
 
   const hasEnoughLocalResults = localResults.length >= limit;
-  if ((!driver.iracingCustomerId || (isFresh(newestLocalTimestamp) && hasEnoughLocalResults)) && localResults.length > 0) {
+  if (
+    (!driver.iracingCustomerId || (isFresh(newestLocalTimestamp) && hasEnoughLocalResults && !hasIncompleteGridrepDetails)) &&
+    localResults.length > 0
+  ) {
     return json({ driver, results: localResults });
   }
 
