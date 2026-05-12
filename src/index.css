@@ -211,14 +211,6 @@ p {
   background: rgba(8, 23, 42, 0.82);
 }
 
-.hero-badge {
-  width: 100%;
-  max-width: 220px;
-  border-radius: 12px;
-  border: 1px solid #4c79a6;
-  margin-bottom: 0.9rem;
-}
-
 .hero-aside p {
   margin-bottom: 0.45rem;
 }
@@ -425,8 +417,6 @@ p {
   border-collapse: collapse;
 }
 
-.timing-table th,
-.timing-table td {
   border-bottom: 1px solid #355a84;
   padding: 0.52rem;
   text-align: left;

@@ -49,7 +49,6 @@ export function HomePage() {
           </div>
         </div>
         <aside className="hero-aside">
-          <img className="hero-badge" src="/ignium-badge.svg" alt="Ignium Motorsport badge" />
           <p className="kicker">Current Focus</p>
           <p><strong>Series:</strong> IMSA / GT Endurance</p>
           <p><strong>Identity:</strong> Blue-line control, low-error racing</p>
