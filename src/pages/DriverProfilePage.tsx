@@ -80,7 +80,10 @@ export function DriverProfilePage() {
             <h3>{result.series ?? "Session"}</h3>
             <p>{result.track}</p>
             <p>{result.car}</p>
-            <p>Start P{result.startPosition ?? "-"} → Finish P{result.finishPosition ?? "-"}</p>
+            <p>
+              Start P{result.startPosition ?? "-"} → Finish {result.classPosition != null ? `Class P${result.classPosition}` : `P${result.finishPosition ?? "-"}`}
+            </p>
+            {result.classPosition != null ? <p>Overall finish P{result.finishPosition ?? "-"}</p> : null}
             <p>Class P{result.classPosition ?? "-"} • Inc {result.incidents ?? "-"}</p>
             <p>Best lap {result.bestLap ?? "-"}</p>
             {result.resultUrl && (

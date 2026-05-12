@@ -35,7 +35,11 @@ export function ResultsPage() {
             <h2>{result.series} - {result.track}</h2>
             <p>{result.car} ({result.carClass})</p>
             <p>Driver/Team: {result.driverName ?? "-"} / {result.teamName ?? "Ignium Motorsport"}</p>
-            <p>Start P{result.startPosition ?? "-"} • Finish P{result.finishPosition ?? "-"} • Class P{result.classPosition ?? "-"}</p>
+            <p>
+              Start P{result.startPosition ?? "-"} • Finish {result.classPosition != null ? `Class P${result.classPosition}` : `P${result.finishPosition ?? "-"}`}
+              {result.classPosition != null ? ` • Overall P${result.finishPosition ?? "-"}` : ""}
+            </p>
+            <p>Class P{result.classPosition ?? "-"}</p>
             <p>Best lap {result.bestLap ?? "-"} • Incidents {result.incidents ?? "-"} • SOF {result.strengthOfField ?? "-"}</p>
             <p className="muted">{result.completedAt ? new Date(result.completedAt).toLocaleString() : "Unknown date"}</p>
             {result.resultUrl && <a href={result.resultUrl} target="_blank" rel="noreferrer">Open iRacing result</a>}
