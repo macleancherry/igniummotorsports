@@ -35,9 +35,9 @@ export function HomePage() {
       <section className="hero">
         <div>
           <p className="kicker">iRacing Endurance Team</p>
-          <h1>Built For Race Day Execution</h1>
+          <h1>Precision. Patience. Pace.</h1>
           <p>
-            Ignium Motorsport runs every event like a control room operation: clean calls, disciplined stints and data-led strategy.
+            Ignium Motorsport runs every event like a control room operation with clean communication, disciplined stints and ruthless consistency.
           </p>
           <div className="link-row">
             <Link className="btn-primary" to="/live">
@@ -49,9 +49,10 @@ export function HomePage() {
           </div>
         </div>
         <aside className="hero-aside">
+          <img className="hero-badge" src="/ignium-badge.svg" alt="Ignium Motorsport badge" />
           <p className="kicker">Current Focus</p>
           <p><strong>Series:</strong> IMSA / GT Endurance</p>
-          <p><strong>Mode:</strong> Team-first strategy</p>
+          <p><strong>Identity:</strong> Blue-line control, low-error racing</p>
           <p><strong>Priority:</strong> Consistency over chaos</p>
         </aside>
       </section>

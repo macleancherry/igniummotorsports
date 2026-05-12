@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-label="Ignium Motorsport">
+  <rect width="1200" height="300" fill="none"/>
+  <g font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <text x="600" y="145" font-size="170" font-weight="700" letter-spacing="7" fill="#16a8e2">IGNIUM</text>
+    <text x="600" y="250" font-size="108" font-weight="500" letter-spacing="4" fill="#9ea3aa">MOTORSPORT</text>
+  </g>
+</svg>

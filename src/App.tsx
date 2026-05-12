@@ -22,9 +22,8 @@ export default function App() {
     <div className="site-shell">
       <header className="site-header">
         <Link className="brand" to="/">
-          <span className="brand-mark">IG</span>
+          <img className="brand-logo" src="/ignium-wordmark.svg" alt="Ignium Motorsport" />
           <span className="brand-text">
-            <strong>Ignium Motorsport</strong>
             <small>Race Control Platform</small>
           </span>
         </Link>
