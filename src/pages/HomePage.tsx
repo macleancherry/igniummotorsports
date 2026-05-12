@@ -33,14 +33,27 @@ export function HomePage() {
   return (
     <div className="page-wrap">
       <section className="hero">
-        <p className="kicker">iRacing Endurance Team</p>
-        <h1>Ignium Motorsport</h1>
-        <p>
-          Results-driven sim racing built on consistency, preparation and race control discipline.
-        </p>
-        <Link className="btn-primary" to="/live">
-          Live Race Control
-        </Link>
+        <div>
+          <p className="kicker">iRacing Endurance Team</p>
+          <h1>Built For Race Day Execution</h1>
+          <p>
+            Ignium Motorsport runs every event like a control room operation: clean calls, disciplined stints and data-led strategy.
+          </p>
+          <div className="link-row">
+            <Link className="btn-primary" to="/live">
+              Open Live Race Control
+            </Link>
+            <Link className="btn-ghost" to="/results">
+              View Team Results
+            </Link>
+          </div>
+        </div>
+        <aside className="hero-aside">
+          <p className="kicker">Current Focus</p>
+          <p><strong>Series:</strong> IMSA / GT Endurance</p>
+          <p><strong>Mode:</strong> Team-first strategy</p>
+          <p><strong>Priority:</strong> Consistency over chaos</p>
+        </aside>
       </section>
 
       {liveEvent?.status === "live" && (
@@ -57,7 +70,7 @@ export function HomePage() {
 
       <section className="panel">
         <div className="panel-head">
-          <h2>Featured drivers</h2>
+          <h2>Featured Drivers</h2>
           <Link to="/drivers">View all</Link>
         </div>
         <div className="grid cards-3">
@@ -73,7 +86,7 @@ export function HomePage() {
 
       <section className="panel">
         <div className="panel-head">
-          <h2>Latest news</h2>
+          <h2>Latest News</h2>
           <Link to="/news">All news</Link>
         </div>
         <div className="grid cards-3">
@@ -89,7 +102,7 @@ export function HomePage() {
 
       <section className="panel">
         <div className="panel-head">
-          <h2>Recent results</h2>
+          <h2>Recent Results</h2>
           <Link to="/results">Full results</Link>
         </div>
         <div className="grid cards-3">

@@ -23,7 +23,10 @@ export default function App() {
       <header className="site-header">
         <Link className="brand" to="/">
           <span className="brand-mark">IG</span>
-          <span>Ignium Motorsport</span>
+          <span className="brand-text">
+            <strong>Ignium Motorsport</strong>
+            <small>Race Control Platform</small>
+          </span>
         </Link>
         <nav className="top-nav" aria-label="Main navigation">
           {navItems.map((item) => (
