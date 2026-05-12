@@ -43,7 +43,7 @@ function isFresh(timestamp: string | null | undefined): boolean {
 async function fetchGridRepResults(context: Context, customerId: number, limit: number) {
   const baseUrl = (context.env.GRIDREP_API_BASE_URL ?? DEFAULT_GRIDREP_API_BASE_URL).replace(/\/$/, "");
   if (!baseUrl) {
-    return [];
+    return { rows: [] };
   }
 
   const headers: Record<string, string> = {
@@ -65,11 +65,12 @@ async function fetchGridRepResults(context: Context, customerId: number, limit: 
   );
 
   if (!response.ok) {
-    return [];
+    return { rows: [] };
   }
 
   const data = (await response.json()) as { results?: GridRepResult[] };
-  return (data.results ?? []).map((row, index) => ({
+  return {
+    rows: (data.results ?? []).map((row, index) => ({
     id: -(index + 1),
     source: "gridrep",
     sourceResultId: row.subsessionId ?? null,
@@ -96,7 +97,8 @@ async function fetchGridRepResults(context: Context, customerId: number, limit: 
     official: row.official ? 1 : 0,
     resultUrl: row.resultUrl ?? null,
     completedAt: row.completedAt ?? null,
-  }));
+    })),
+  };
 }
 
 async function loadLocalResults(db: D1Database, driverId: number, limit: number) {
@@ -241,7 +243,8 @@ export async function onRequestGet(context: Context) {
   if (db instanceof Response) return db;
 
   const slug = context.params.slug;
-  const limit = Math.max(1, Math.min(20, toInt(new URL(context.request.url).searchParams.get("limit"), 10)));
+  const url = new URL(context.request.url);
+  const limit = Math.max(1, Math.min(20, toInt(url.searchParams.get("limit"), 10)));
 
   const driver = await db.prepare(
     `SELECT id, name, slug, iracing_customer_id as iracingCustomerId
@@ -278,11 +281,20 @@ export async function onRequestGet(context: Context) {
     return json({ driver, results: localResults });
   }
 
-  const remoteResults = await fetchGridRepResults(context, driver.iracingCustomerId, limit);
-  if (remoteResults.length > 0) {
-    await upsertGridRepResults(db, driver, remoteResults);
-    const refreshed = await loadLocalResults(db, driver.id, limit);
-    return json({ driver, results: refreshed.results ?? [] });
+  const remote = await fetchGridRepResults(context, driver.iracingCustomerId, limit);
+  if (remote.rows.length > 0) {
+    try {
+      await upsertGridRepResults(db, driver, remote.rows);
+      const refreshed = await loadLocalResults(db, driver.id, limit);
+      const refreshedRows = refreshed.results ?? [];
+      if (refreshedRows.length > 0) {
+        return json({ driver, results: refreshedRows });
+      }
+    } catch {
+      // Fall back to the freshly fetched upstream rows below.
+    }
+
+    return json({ driver, results: remote.rows });
   }
 
   return json({ driver, results: localResults });
