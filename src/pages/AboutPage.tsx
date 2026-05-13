@@ -6,9 +6,9 @@ export function AboutPage() {
         Ignium Motorsport is an iRacing endurance racing team built on three core morals: hard work, dedication, and positivity.
         We're committed to continuous improvement, professional conduct, and bringing passion to every lap.
       </p>
-      
+
       <h2>Our Three Morals</h2>
-      
+
       <div className="values-section">
         <div className="value-card">
           <h3><span className="value-icon">HW</span> Hard Work</h3>
@@ -18,7 +18,7 @@ export function AboutPage() {
             There are no shortcuts to excellence.
           </p>
         </div>
-        
+
         <div className="value-card">
           <h3><span className="value-icon">DD</span> Dedication</h3>
           <p>
@@ -27,7 +27,7 @@ export function AboutPage() {
             We lead by example, every session.
           </p>
         </div>
-        
+
         <div className="value-card">
           <h3><span className="value-icon">PX</span> Positivity</h3>
           <p>
@@ -36,7 +36,7 @@ export function AboutPage() {
           </p>
         </div>
       </div>
-      
+
       <h2>Our Mission</h2>
       <p className="mission-statement">
         <strong>Ignite Your PASSION</strong>

@@ -33,67 +33,75 @@ export function HomePage() {
   return (
     <div className="page-wrap">
       <section className="hero">
-        <div className="hero-copy">
-          <p className="kicker">Ignium Motorsport</p>
-          <h1>Fast, calm, and built like a real garage.</h1>
-          <p className="hero-lead">
-            A racing team site should feel like a paddock, not a dashboard. This is a softer, cleaner home for
-            the team story, live race control, results, and drivers.
+        <div>
+          <p className="kicker">iRacing Endurance Team</p>
+          <h1>Built for Endurance. Driven by Joy.</h1>
+          <p>
+            Ignium Motorsport is a race team first and a data platform second. We focus on clean pace,
+            reliable teamwork, and a culture that keeps racing fun under pressure.
           </p>
           <div className="hero-points">
-            <span>Endurance pace</span>
-            <span>Clean racecraft</span>
-            <span>Good energy</span>
+            <span>Long-run discipline</span>
+            <span>Calm comms in traffic</span>
+            <span>Positive team energy</span>
           </div>
           <div className="link-row">
             <Link className="btn-primary" to="/live">
-              Live race control
+              Open Live Race Control
             </Link>
-            <Link className="btn-ghost" to="/results">
-              Recent results
+            <Link className="btn-ghost" to="/about">
+              Explore Team Story
             </Link>
           </div>
         </div>
 
         <aside className="hero-aside">
-          <p className="eyebrow">Race week</p>
-          <div className="aside-block aside-block-primary">
-            <span className="aside-label">Current status</span>
-            <strong>{liveEvent ? liveEvent.status.toUpperCase() : "PREPARING"}</strong>
-            <p>{liveEvent ? liveEvent.title : "Building toward the next session."}</p>
-          </div>
-          <div className="aside-block-grid">
-            <div className="aside-block">
-              <span className="aside-label">Drivers</span>
+          <p className="kicker">This Week</p>
+          {liveEvent ? (
+            <>
+              <p><strong>Live status:</strong> {liveEvent.status.toUpperCase()}</p>
+              <p><strong>Session:</strong> {liveEvent.title}</p>
+              <p><strong>Track:</strong> {liveEvent.track}</p>
+            </>
+          ) : (
+            <>
+              <p><strong>Training focus:</strong> racecraft and pit entry consistency</p>
+              <p><strong>Car setup:</strong> stable over long stints</p>
+              <p><strong>Driver brief:</strong> keep momentum, avoid forced moves</p>
+            </>
+          )}
+          <div className="hero-stat-grid">
+            <div>
+              <span>Drivers</span>
               <strong>{drivers.length}</strong>
             </div>
-            <div className="aside-block">
-              <span className="aside-label">News</span>
+            <div>
+              <span>News</span>
               <strong>{news.length}</strong>
             </div>
-            <div className="aside-block">
-              <span className="aside-label">Results</span>
+            <div>
+              <span>Recent Results</span>
               <strong>{results.length}</strong>
             </div>
           </div>
         </aside>
       </section>
 
-      <section className="values-highlight values-highlight-soft">
+      <section className="values-highlight">
         <div className="value-highlight-card">
-          <span className="value-icon">01</span>
-          <h3>Preparation</h3>
-          <p>Every stint starts before the green flag.</p>
+          <span className="value-icon">HW</span>
+          <h3>Hard Work</h3>
+          <p>Preparation is our competitive edge.</p>
         </div>
         <div className="value-highlight-card">
-          <span className="value-icon">02</span>
-          <h3>Composure</h3>
-          <p>Traffic, weather, and pressure stay manageable.</p>
+          <span className="value-icon">DD</span>
+          <h3>Dedication</h3>
+          <p>Professional standards in every session.</p>
         </div>
         <div className="value-highlight-card">
-          <span className="value-icon">03</span>
-          <h3>Team feel</h3>
-          <p>Serious about pace, never stiff about the sport.</p>
+          <span className="value-icon">PX</span>
+          <h3>Positivity</h3>
+          <p>Pressure stays high, morale stays higher.</p>
         </div>
       </section>
 
@@ -111,7 +119,7 @@ export function HomePage() {
 
       <section className="panel">
         <div className="panel-head">
-          <h2>Drivers</h2>
+          <h2>Featured Drivers</h2>
           <Link to="/drivers">View all</Link>
         </div>
         <div className="grid cards-3">
