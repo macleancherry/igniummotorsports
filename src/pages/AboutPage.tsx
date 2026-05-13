@@ -11,7 +11,7 @@ export function AboutPage() {
       
       <div className="values-section">
         <div className="value-card">
-          <h3>🔨 Hard Work</h3>
+          <h3><span className="value-icon">HW</span> Hard Work</h3>
           <p>
             Racing involves both good luck and bad luck, but success is earned through practice and preparation.
             We invest the time and effort needed to improve ourselves and strengthen our team.
@@ -20,7 +20,7 @@ export function AboutPage() {
         </div>
         
         <div className="value-card">
-          <h3>💪 Dedication</h3>
+          <h3><span className="value-icon">DD</span> Dedication</h3>
           <p>
             We juggle careers, families, and racing responsibilities—but never lose focus on what matters.
             Our commitment to professional, sportsmanlike conduct protects both our reputation and the integrity of every race.
@@ -29,7 +29,7 @@ export function AboutPage() {
         </div>
         
         <div className="value-card">
-          <h3>⚡ Positivity</h3>
+          <h3><span className="value-icon">PX</span> Positivity</h3>
           <p>
             Wins and losses are both opportunities to learn. We stay positive in adversity and extract lessons from every situation—
             good or bad. We transform setbacks into fuel for improvement and drive forward stronger.

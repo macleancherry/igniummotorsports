@@ -35,43 +35,72 @@ export function HomePage() {
       <section className="hero">
         <div>
           <p className="kicker">iRacing Endurance Team</p>
-          <h1>Ignite Your PASSION</h1>
+          <h1>Built for Endurance. Driven by Joy.</h1>
           <p>
-            Ignium Motorsport competes on three core values: Hard Work, Dedication, and Positivity.
-            We race with discipline, integrity, and the drive to excel.
+            Ignium Motorsport is a race team first and a data platform second. We focus on clean pace,
+            reliable teamwork, and a culture that keeps racing fun under pressure.
           </p>
+          <div className="hero-points">
+            <span>Long-run discipline</span>
+            <span>Calm comms in traffic</span>
+            <span>Positive team energy</span>
+          </div>
           <div className="link-row">
             <Link className="btn-primary" to="/live">
               Open Live Race Control
             </Link>
             <Link className="btn-ghost" to="/about">
-              Learn Our Values
+              Explore Team Story
             </Link>
           </div>
         </div>
         <aside className="hero-aside">
-          <p className="kicker">What We Do</p>
-          <p><strong>Practice:</strong> Disciplined preparation and continuous improvement</p>
-          <p><strong>Conduct:</strong> Professional, sportsmanlike racing always</p>
-          <p><strong>Growth:</strong> Learn from every race, positive and negative</p>
+          <p className="kicker">This Week</p>
+          {liveEvent ? (
+            <>
+              <p><strong>Live status:</strong> {liveEvent.status.toUpperCase()}</p>
+              <p><strong>Session:</strong> {liveEvent.title}</p>
+              <p><strong>Track:</strong> {liveEvent.track}</p>
+            </>
+          ) : (
+            <>
+              <p><strong>Training focus:</strong> racecraft and pit entry consistency</p>
+              <p><strong>Car setup:</strong> stable over long stints</p>
+              <p><strong>Driver brief:</strong> keep momentum, avoid forced moves</p>
+            </>
+          )}
+          <div className="hero-stat-grid">
+            <div>
+              <span>Drivers</span>
+              <strong>{drivers.length}</strong>
+            </div>
+            <div>
+              <span>News</span>
+              <strong>{news.length}</strong>
+            </div>
+            <div>
+              <span>Recent Results</span>
+              <strong>{results.length}</strong>
+            </div>
+          </div>
         </aside>
       </section>
 
       <section className="values-highlight">
         <div className="value-highlight-card">
-          <span className="value-icon">🔨</span>
+          <span className="value-icon">HW</span>
           <h3>Hard Work</h3>
-          <p>We invest the practice needed to excel</p>
+          <p>Preparation is our competitive edge.</p>
         </div>
         <div className="value-highlight-card">
-          <span className="value-icon">💪</span>
+          <span className="value-icon">DD</span>
           <h3>Dedication</h3>
-          <p>We maintain professional standards always</p>
+          <p>Professional standards in every session.</p>
         </div>
         <div className="value-highlight-card">
-          <span className="value-icon">⚡</span>
+          <span className="value-icon">PX</span>
           <h3>Positivity</h3>
-          <p>We turn adversity into fuel for improvement</p>
+          <p>Pressure stays high, morale stays higher.</p>
         </div>
       </section>
 
