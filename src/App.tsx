@@ -54,7 +54,6 @@ export default function App() {
             <small>Race Control Platform</small>
           </span>
         </Link>
-        <span className="season-chip">2026 Endurance Season</span>
         <nav className="top-nav" aria-label="Main navigation">
           {navItems.map((item) => (
             <NavLink key={item.to} to={item.to} className={({ isActive }) => (isActive ? "is-active" : "")} end={item.to === "/"}>
