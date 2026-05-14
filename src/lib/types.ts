@@ -102,3 +102,20 @@ export type LiveTimingRow = {
   pitStatus?: string | null;
   streamUrl?: string | null;
 };
+
+export type IracingLiveRow = {
+  sessionId: string;
+  subsessionId: string;
+  customerId: number;
+  driverName: string;
+  carNumber: string;
+  position: number;
+  classPosition: number;
+  lap: number;
+  lastLap: number | null;
+  bestLap: number | null;
+  interval: number | null;
+  gap: number | null;
+  updatedAt: string;
+  receivedAt: string;
+};

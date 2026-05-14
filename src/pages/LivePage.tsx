@@ -1,6 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
-import { getLive, getTiming } from "../lib/api";
-import type { Driver, LiveEvent, LiveTimingRow } from "../lib/types";
+import { getIracingLive, getLive, getTiming } from "../lib/api";
+import type { Driver, IracingLiveRow, LiveEvent, LiveTimingRow } from "../lib/types";
+
+function fmtLapTime(s: number | null): string {
+  if (s === null) return "-";
+  const m = Math.floor(s / 60);
+  const rem = (s % 60).toFixed(3).padStart(6, "0");
+  return m > 0 ? `${m}:${rem}` : rem;
+}
+
+function fmtDelta(s: number | null): string {
+  if (s === null) return "-";
+  return `+${s.toFixed(3)}`;
+}
 
 export function LivePage() {
   const [event, setEvent] = useState<LiveEvent | null>(null);
@@ -8,6 +20,8 @@ export function LivePage() {
   const [timingRows, setTimingRows] = useState<LiveTimingRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [iracingRows, setIracingRows] = useState<IracingLiveRow[]>([]);
+  const [iracingGeneratedAt, setIracingGeneratedAt] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -49,6 +63,20 @@ export function LivePage() {
 
     return () => clearInterval(timer);
   }, [event?.id]);
+
+  useEffect(() => {
+    function fetchIracing() {
+      getIracingLive()
+        .then(({ rows, generatedAt }) => {
+          setIracingRows(rows);
+          setIracingGeneratedAt(generatedAt);
+        })
+        .catch(() => undefined);
+    }
+    fetchIracing();
+    const timer = setInterval(fetchIracing, 10_000);
+    return () => clearInterval(timer);
+  }, []);
 
   const statusClass = useMemo(() => `status-pill status-${event?.status ?? "scheduled"}`, [event?.status]);
 
@@ -135,6 +163,49 @@ export function LivePage() {
           </article>
         </>
       )}
+
+      <article className="panel">
+        <h2>iRacing Live Telemetry</h2>
+        {iracingRows.length === 0 ? (
+          <p>No iRacing session detected.</p>
+        ) : (
+          <div className="timing-table-wrap">
+            <table className="timing-table">
+              <thead>
+                <tr>
+                  <th>Pos</th>
+                  <th>Class</th>
+                  <th>Car</th>
+                  <th>Driver</th>
+                  <th>Lap</th>
+                  <th>Last Lap</th>
+                  <th>Best Lap</th>
+                  <th>Gap</th>
+                  <th>Interval</th>
+                </tr>
+              </thead>
+              <tbody>
+                {iracingRows.map((row) => (
+                  <tr key={row.customerId}>
+                    <td>{row.position > 0 ? row.position : "-"}</td>
+                    <td>{row.classPosition > 0 ? row.classPosition : "-"}</td>
+                    <td>{row.carNumber || "-"}</td>
+                    <td>{row.driverName}</td>
+                    <td>{row.lap}</td>
+                    <td>{fmtLapTime(row.lastLap)}</td>
+                    <td>{fmtLapTime(row.bestLap)}</td>
+                    <td>{fmtDelta(row.gap)}</td>
+                    <td>{fmtDelta(row.interval)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {iracingGeneratedAt && (
+              <p className="muted">Updated {new Date(iracingGeneratedAt).toLocaleTimeString()}</p>
+            )}
+          </div>
+        )}
+      </article>
     </section>
   );
 }

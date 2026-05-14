@@ -1,4 +1,6 @@
-import type { Driver, LiveEvent, LiveTimingRow, NewsPost, ResultRow } from "./types";
+import type { Driver, IracingLiveRow, LiveEvent, LiveTimingRow, NewsPost, ResultRow } from "./types";
+
+const IRACING_LIVE_URL = "https://ignium-live-api.maclean-cherry.workers.dev/api/live";
 
 const DEV_FALLBACK = import.meta.env.DEV;
 
@@ -112,6 +114,10 @@ export async function getLive(): Promise<{ event: LiveEvent | null; drivers: Dri
 export async function getTiming(eventId: number): Promise<LiveTimingRow[]> {
   const data = await fetchJson<{ rows: LiveTimingRow[] }>(`/api/timing/${eventId}`);
   return data.rows;
+}
+
+export async function getIracingLive(): Promise<{ ok: boolean; rows: IracingLiveRow[]; generatedAt: string }> {
+  return fetchJson<{ ok: boolean; rows: IracingLiveRow[]; generatedAt: string }>(IRACING_LIVE_URL);
 }
 
 export { ApiError };
