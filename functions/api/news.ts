@@ -12,22 +12,61 @@ type CreateNewsBody = {
 };
 
 export async function onRequestGet(context: Context) {
+  const cache = caches.default;
+  const cacheKey = new Request(context.request.url, context.request);
+  const cached = await cache.match(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
   const db = requireDb(context);
   if (db instanceof Response) return db;
 
   try {
     const rows = await db
       .prepare(
-        `SELECT id, title, slug, excerpt, body_markdown as bodyMarkdown, cover_image_url as coverImageUrl,
-                author, published_at as publishedAt, created_at as createdAt, updated_at as updatedAt
+        `SELECT id, title, slug, excerpt, cover_image_url as coverImageUrl,
+                author, published_at as publishedAt, created_at as createdAt, updated_at as updatedAt, cached_at as cachedAt
          FROM news_posts
          ORDER BY datetime(COALESCE(published_at, created_at)) DESC`
       )
       .all();
 
-    return json({ results: rows.results ?? [] });
+    const data = rows.results ?? [];
+    
+    // Get cache freshness
+    const cacheInfoRow = await db
+      .prepare(`SELECT MAX(cached_at) as latestCachedAt FROM news_posts WHERE cached_at IS NOT NULL`)
+      .first<{ latestCachedAt: string | null }>();
+    
+    const cachedAt = cacheInfoRow?.latestCachedAt || new Date().toISOString();
+    const cachedMinutesAgo = Math.floor((Date.now() - new Date(cachedAt).getTime()) / 60000);
+
+    const response = new Response(
+      JSON.stringify({
+      results: data,
+      cachedAt,
+      cachedMinutesAgo,
+      isFresh: cachedMinutesAgo <= 60,
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "public, max-age=60, s-maxage=300",
+        },
+      }
+    );
+
+    await cache.put(cacheKey, response.clone());
+    return response;
   } catch {
-    return json({ results: [] });
+    return json({
+      results: [],
+      cachedAt: null,
+      cachedMinutesAgo: null,
+      isFresh: false,
+    });
   }
 }
 

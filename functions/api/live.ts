@@ -28,7 +28,7 @@ export async function onRequestGet(context: Context) {
       .prepare(
         `SELECT id, title, slug, team_name as teamName, series, track, car_class as carClass, car, start_time as startTime,
                 status, iracing_session_id as iracingSessionId, subsession_id as subsessionId, timing_url as timingUrl,
-                stream_url as streamUrl, notes
+                stream_url as streamUrl, notes, cached_at as cachedAt
          FROM events
          ORDER BY CASE status WHEN 'live' THEN 0 WHEN 'scheduled' THEN 1 ELSE 2 END, datetime(start_time) DESC
          LIMIT 1`
@@ -36,7 +36,7 @@ export async function onRequestGet(context: Context) {
       .first<any>();
 
     if (!event) {
-      return json({ event: null, drivers: [] });
+      return json({ event: null, drivers: [], cachedAt: new Date().toISOString(), cachedMinutesAgo: 0, isFresh: true });
     }
 
     const drivers = await db
@@ -51,9 +51,24 @@ export async function onRequestGet(context: Context) {
       .bind(event.id)
       .all();
 
-    return json({ event, drivers: drivers.results ?? [] });
+    const cachedAt = event.cachedAt || new Date().toISOString();
+    const cachedMinutesAgo = Math.floor((Date.now() - new Date(cachedAt).getTime()) / 60000);
+
+    return json({
+      event,
+      drivers: drivers.results ?? [],
+      cachedAt,
+      cachedMinutesAgo,
+      isFresh: cachedMinutesAgo <= 60,
+    });
   } catch {
-    return json({ event: null, drivers: [] });
+    return json({
+      event: null,
+      drivers: [],
+      cachedAt: null,
+      cachedMinutesAgo: null,
+      isFresh: false,
+    });
   }
 }
 

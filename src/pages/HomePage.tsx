@@ -1,7 +1,18 @@
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { getDrivers, getLive, getNews, getResults } from "../lib/api";
 import type { Driver, LiveEvent, NewsPost, ResultRow } from "../lib/types";
+
+function formatDriverName(name: string): { first: string; last: string } {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) {
+    return { first: "Driver", last: "Unknown" };
+  }
+  if (parts.length === 1) {
+    return { first: parts[0], last: "" };
+  }
+  return { first: parts[0], last: parts.slice(1).join(" ") };
+}
 
 export function HomePage() {
   const [drivers, setDrivers] = useState<Driver[]>([]);
@@ -12,12 +23,14 @@ export function HomePage() {
 
   useEffect(() => {
     let mounted = true;
+
     Promise.all([getDrivers(), getNews(), getResults(), getLive()])
       .then(([driversData, newsData, resultsData, liveData]) => {
         if (!mounted) return;
-        setDrivers(driversData.slice(0, 3));
+
+        setDrivers(driversData.slice(0, 8));
         setNews(newsData.slice(0, 3));
-        setResults(resultsData.slice(0, 3));
+        setResults(resultsData.slice(0, 5));
         setLiveEvent(liveData.event);
       })
       .catch((err) => {
@@ -30,110 +43,250 @@ export function HomePage() {
     };
   }, []);
 
+  const displayDrivers = useMemo(() => drivers.slice(0, 8), [drivers]);
+
   return (
-    <div className="page-wrap">
-      <section className="hero">
-        <div>
-          <p className="kicker">iRacing Endurance Team</p>
-          <h1>Ignite Your PASSION</h1>
-          <p>
-            Ignium Motorsport competes on three core values: Hard Work, Dedication, and Positivity.
-            We race with discipline, integrity, and the drive to excel.
-          </p>
-          <div className="link-row">
-            <Link className="btn-primary" to="/live">
-              Open Live Race Control
-            </Link>
-            <Link className="btn-ghost" to="/about">
-              Learn Our Values
-            </Link>
+    <>
+      <section
+        className="hero"
+        style={{ "--hero-image": "url('/assets/ignium-hero-car.png')" } as React.CSSProperties}
+      >
+        <div className="hero-inner">
+          <div className="hero-copy">
+            <div className="eyebrow">iRacing Endurance Team</div>
+            <h1 className="hero-title">
+              <span className="blue">Ignite</span>
+              <span>Your</span>
+              <span>Passion</span>
+            </h1>
+            <p className="hero-subtitle">Ignium Motorsport competes on three core values: Hard Work, Dedication, and Positivity. We race with discipline, integrity, and the drive to excel.</p>
+            <div className="button-row">
+              <Link className="button-primary" to="/live">Open Live Race Control</Link>
+              <Link className="button-secondary" to="/drivers">Meet the Drivers</Link>
+            </div>
+          </div>
+
+          <aside className="next-race-card">
+            <div className="eyebrow">Next race</div>
+            <h3>{liveEvent?.series ?? "IMSA Sim Racing Series"}</h3>
+            <p>Round 4 - {liveEvent?.track ?? "Watkins Glen"}</p>
+            <div className="track-outline" />
+          </aside>
+        </div>
+      </section>
+
+      <section className="section team-intro">
+        <div className="page-shell">
+          <div className="team-intro-grid">
+            <div>
+              <h2>
+                Team <span className="text-blue">Ignium</span>
+              </h2>
+              <p>
+                Ignium Motorsport is an iRacing endurance racing team built on three core morals: hard work,
+                dedication, and positivity. We're committed to continuous improvement, professional conduct,
+                and bringing passion to every lap.
+              </p>
+              <p>
+                We believe that by living these three morals, Ignium has the potential to excel and inspire others.
+                We look forward to the journey.
+              </p>
+            </div>
+
+            <div className="telemetry-map">
+              <div className="telemetry-stats">
+                <div className="telemetry-stat"><span>Practice</span><strong>Disciplined preparation and continuous improvement</strong></div>
+                <div className="telemetry-stat"><span>Conduct</span><strong>Professional, sportsmanlike racing always</strong></div>
+                <div className="telemetry-stat"><span>Growth</span><strong>Learn from every race, positive and negative</strong></div>
+              </div>
+            </div>
           </div>
         </div>
-        <aside className="hero-aside">
-          <p className="kicker">What We Do</p>
-          <p><strong>Practice:</strong> Disciplined preparation and continuous improvement</p>
-          <p><strong>Conduct:</strong> Professional, sportsmanlike racing always</p>
-          <p><strong>Growth:</strong> Learn from every race, positive and negative</p>
-        </aside>
       </section>
 
-      <section className="values-highlight">
-        <div className="value-highlight-card">
-          <span className="value-icon">🔨</span>
-          <h3>Hard Work</h3>
-          <p>We invest the practice needed to excel</p>
-        </div>
-        <div className="value-highlight-card">
-          <span className="value-icon">💪</span>
-          <h3>Dedication</h3>
-          <p>We maintain professional standards always</p>
-        </div>
-        <div className="value-highlight-card">
-          <span className="value-icon">⚡</span>
-          <h3>Positivity</h3>
-          <p>We turn adversity into fuel for improvement</p>
+      <section className="section compact values-section">
+        <div className="page-shell">
+          <h3 className="values-title">Built On More Than Pace</h3>
+          <div className="value-grid">
+            <article className="value-card">
+              <div className="value-icon">🔨</div>
+              <div>
+                <h3>Hard Work</h3>
+                <p>We invest the time and effort needed to improve ourselves and strengthen our team. There are no shortcuts to excellence.</p>
+              </div>
+            </article>
+
+            <article className="value-card">
+              <div className="value-icon">💪</div>
+              <div>
+                <h3>Dedication</h3>
+                <p>Our commitment to professional, sportsmanlike conduct protects both our reputation and the integrity of every race.</p>
+              </div>
+            </article>
+
+            <article className="value-card">
+              <div className="value-icon">⚡</div>
+              <div>
+                <h3>Positivity</h3>
+                <p>Wins and losses are both opportunities to learn. We transform setbacks into fuel for improvement and drive forward stronger.</p>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
-      {liveEvent?.status === "live" && (
-        <section className="panel panel-live">
-          <h2>Live now</h2>
-          <p>{liveEvent.title}</p>
-          <p>
-            {liveEvent.series} at {liveEvent.track}
-          </p>
+      <section className="section drivers-section">
+        <div className="page-shell">
+          <div className="section-header">
+            <h2>Drivers</h2>
+            <div className="eyebrow">The Team</div>
+          </div>
+
+          <div className="driver-grid">
+            {displayDrivers.map((driver) => {
+              const name = formatDriverName(driver.name);
+              return (
+                <Link key={driver.id} className="driver-card" to={`/drivers/${driver.slug}`}>
+                  <div className="driver-number-watermark">{driver.raceNumber ?? "--"}</div>
+
+                  {driver.avatarUrl ? (
+                    <img className="driver-image" src={driver.avatarUrl} alt={driver.name} />
+                  ) : null}
+
+                  <div className="driver-info">
+                    <h3>
+                      {name.first}
+                      <span className="surname">{name.last}</span>
+                    </h3>
+                    <div className="driver-race-number">{driver.raceNumber ?? "--"}</div>
+                    <div className="driver-meta">
+                      <span>{driver.country ?? "PRO"}</span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="button-row" style={{ justifyContent: "center" }}>
+            <Link className="button-ghost" to="/drivers">View All Drivers</Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="live-race-control">
+        <div className="page-shell">
+          <div className="live-panel">
+            <div>
+              <h2>
+                Live <span>Race Control</span>
+              </h2>
+              <p>Follow every lap, every move, every moment. Live timing, telemetry and race control.</p>
+              <div className="button-row">
+                <Link className="button-primary" to="/live">Open Live Race Control</Link>
+              </div>
+            </div>
+
+            <div>
+              <div className="live-indicator">Live</div>
+              <div className="timing-table-wrap" style={{ marginTop: 14 }}>
+                <table className="timing-table">
+                  <thead>
+                    <tr>
+                      <th>Pos</th>
+                      <th>Driver</th>
+                      <th>Series</th>
+                      <th>Track</th>
+                      <th>Finish</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {results.map((row, index) => (
+                      <tr key={row.id}>
+                        <td>{index + 1}</td>
+                        <td>{row.driverName ?? "Unknown"}</td>
+                        <td>{row.series ?? "GT3"}</td>
+                        <td>{row.track ?? "Watkins Glen"}</td>
+                        <td>P{row.finishPosition ?? "-"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section compact">
+        <div className="page-shell">
+          <div className="section-header">
+            <h3>Latest News</h3>
+            <Link className="button-ghost" to="/news">All News</Link>
+          </div>
+          <div className="news-grid">
+            {news.map((post) => (
+              <article key={post.id} className="news-card">
+                <div className="news-meta">Ignium Update</div>
+                <h3>{post.title}</h3>
+                <p>{post.excerpt}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <footer className="site-footer">
+        <div className="page-shell">
+          <div className="footer-grid">
+            <div>
+              <img src="/ignium-wordmark.svg" alt="Ignium Motorsport" />
+              <div className="social-row">
+                <a href="https://discord.gg/ignium" aria-label="Discord" target="_blank" rel="noopener noreferrer">D</a>
+              </div>
+            </div>
+
+            <div>
+              <h4>Navigation</h4>
+              <div className="footer-links">
+                <Link to="/">Home</Link>
+                <Link to="/about">About</Link>
+                <Link to="/news">News</Link>
+                <Link to="/drivers">Drivers</Link>
+                <Link to="/results">Results</Link>
+                <Link to="/live">Live Race Control</Link>
+              </div>
+            </div>
+
+
+
+            <div>
+              <h4>Stay Connected</h4>
+              <p>Get the latest news, results and behind-the-scenes updates.</p>
+              <form className="newsletter-form" onSubmit={(event) => event.preventDefault()}>
+                <input type="email" placeholder="Enter your email" aria-label="Email" />
+                <button type="submit">›</button>
+              </form>
+            </div>
+          </div>
+
+          <div className="footer-bottom">
+            <span>2026 Ignium Motorsport. All rights reserved.</span>
+            <span>Privacy Policy • Terms of Use • Contact</span>
+          </div>
+        </div>
+      </footer>
+
+      {error ? (
+        <section className="section compact">
+          <div className="page-shell">
+            <div className="empty-state">
+              <h3>Data Loading Notice</h3>
+              <p>{error}</p>
+            </div>
+          </div>
         </section>
-      )}
-
-      {error && <p className="error">{error}</p>}
-
-      <section className="panel">
-        <div className="panel-head">
-          <h2>Featured Drivers</h2>
-          <Link to="/drivers">View all</Link>
-        </div>
-        <div className="grid cards-3">
-          {drivers.map((driver) => (
-            <article key={driver.id} className="card">
-              <h3>{driver.name}</h3>
-              <p>#{driver.raceNumber ?? "-"} • {driver.country ?? "Unknown"}</p>
-              <Link to={`/drivers/${driver.slug}`}>Profile</Link>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="panel">
-        <div className="panel-head">
-          <h2>Latest News</h2>
-          <Link to="/news">All news</Link>
-        </div>
-        <div className="grid cards-3">
-          {news.map((post) => (
-            <article key={post.id} className="card">
-              <h3>{post.title}</h3>
-              <p>{post.excerpt}</p>
-              <Link to={`/news/${post.slug}`}>Read article</Link>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="panel">
-        <div className="panel-head">
-          <h2>Recent Results</h2>
-          <Link to="/results">Full results</Link>
-        </div>
-        <div className="grid cards-3">
-          {results.map((result) => (
-            <article key={result.id} className="card">
-              <h3>{result.series}</h3>
-              <p>{result.track}</p>
-              <p>Finish P{result.finishPosition ?? "-"}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-    </div>
+      ) : null}
+    </>
   );
 }

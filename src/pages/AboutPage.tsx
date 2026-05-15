@@ -1,54 +1,86 @@
+import { Link } from "react-router-dom";
+
 export function AboutPage() {
   return (
-    <section className="page-wrap prose">
-      <h1>About Ignium Motorsport</h1>
-      <p>
-        Ignium Motorsport is an iRacing endurance racing team built on three core morals: hard work, dedication, and positivity.
-        We're committed to continuous improvement, professional conduct, and bringing passion to every lap.
+    <section className="page-wrap prose about-page">
+      <h1>Racing with Purpose</h1>
+      <p style={{ fontSize: "1.1rem", lineHeight: "1.75" }}>
+        Ignium Motorsport was built for drivers who want to improve, compete and represent something bigger than an
+        individual result. We race with purpose.
       </p>
-      
-      <h2>Our Three Morals</h2>
-      
+
+      <h2 style={{ marginTop: "2rem" }}>Our Foundation: Three Core Values</h2>
+
       <div className="values-section">
         <div className="value-card">
-          <h3>🔨 Hard Work</h3>
+          <h3>Hard Work</h3>
           <p>
-            Racing involves both good luck and bad luck, but success is earned through practice and preparation.
-            We invest the time and effort needed to improve ourselves and strengthen our team.
-            There are no shortcuts to excellence.
+            In racing you have good luck and bad luck, but there is no denying that to succeed you have to practice.
+            Ignium Motorsport is willing to put the practice in to better the drivers and the team. Luck changes.
+            Preparation compounds.
           </p>
         </div>
-        
+
         <div className="value-card">
-          <h3>💪 Dedication</h3>
+          <h3>Dedication</h3>
           <p>
-            We juggle careers, families, and racing responsibilities—but never lose focus on what matters.
-            Our commitment to professional, sportsmanlike conduct protects both our reputation and the integrity of every race.
-            We lead by example, every session.
+            Everyone has to work and juggle family time alongside racing, but the team is committed to making sure
+            Ignium Motorsport is not associated with unsportsmanlike conduct or poor behaviour. We lead by example in
+            every session, every race, every series.
           </p>
         </div>
-        
+
         <div className="value-card">
-          <h3>⚡ Positivity</h3>
+          <h3>Positivity</h3>
           <p>
-            Wins and losses are both opportunities to learn. We stay positive in adversity and extract lessons from every situation—
-            good or bad. We transform setbacks into fuel for improvement and drive forward stronger.
+            Racing brings good luck and bad luck. Ignium remains positive, reflects on what could be done differently
+            next time, and uses negative moments to become better and come back stronger. Every result is a step
+            forward.
           </p>
         </div>
       </div>
-      
-      <h2>Our Mission</h2>
-      <p className="mission-statement">
-        <strong>Ignite Your PASSION</strong>
-      </p>
+
+      <h2 style={{ marginTop: "2rem" }}>Our Attitude to Racing</h2>
       <p>
-        We believe that by living these three morals, Ignium has the potential to excel and inspire others.
-        This platform is built to support that mission—bringing together streams, result history, driver profiles, and live timing
-        into one cohesive race control hub where excellence is visible and accountable.
+        Ignium Motorsport competes at iRacing's highest levels across multiple series. We focus on:
       </p>
+      <ul>
+        <li>
+          <strong>Preparation:</strong> Disciplined practice, data review, and continuous improvement between races.
+        </li>
+        <li>
+          <strong>Respect:</strong> Professional, sportsmanlike conduct in every session. Racing is how we represent
+          ourselves and our team.
+        </li>
+        <li>
+          <strong>Progress:</strong> Learning from every race—wins and losses alike. We use hard races as fuel to come
+          back stronger.
+        </li>
+        <li>
+          <strong>Balance:</strong> We race seriously while balancing real life. Racing shouldn't come at the cost of
+          family, work or well-being.
+        </li>
+      </ul>
+
+      <h2 style={{ marginTop: "2rem" }}>Ignite Your Passion</h2>
+      <p style={{ fontSize: "1.05rem", fontWeight: 600, color: "var(--ignium-blue)" }}>
+        Based on hard work, dedication and positivity, Ignium Motorsport has the potential to excel and ignite the
+        passion of every driver who wears the colours.
+      </p>
+
       <p>
-        We look forward to the journey.
+        This platform brings together live timing, driver profiles, race results and team news into one cohesive race
+        control hub where our journey is visible and accountable.
       </p>
+
+      <div className="link-row" style={{ marginTop: "2rem" }}>
+        <Link className="btn-primary" to="/live">
+          Open Live Race Control
+        </Link>
+        <Link className="btn-ghost" to="/drivers">
+          Meet the Drivers
+        </Link>
+      </div>
     </section>
   );
 }

@@ -1,0 +1,10 @@
+name = "ignium-motorsport-cache-sync"
+compatibility_date = "2026-05-12"
+
+[[triggers.crons]]
+cron = "0 * * * *"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ignium_motorsport"
+database_id = "fff2a18d-840a-45ca-b229-6e7b95cd99d1"

@@ -27,9 +27,16 @@ type GridRepResult = {
   resultUrl?: string | null;
 };
 
-const FRESHNESS_WINDOW_MS = 5 * 60 * 1000;
+const FRESHNESS_WINDOW_MS = 60 * 60 * 1000; // 60 minutes for profile page caching
 const DEFAULT_GRIDREP_API_BASE_URL = "https://gridrep.pages.dev";
 const IGNIUM_PUBLIC_ORIGIN = "https://igniummotorsports.pages.dev";
+const BEST_LAP_SORT_SQL = `
+  CASE
+    WHEN best_lap IS NULL OR TRIM(best_lap) = '' OR INSTR(best_lap, ':') = 0 THEN 999999.999
+    ELSE (CAST(SUBSTR(best_lap, 1, INSTR(best_lap, ':') - 1) AS REAL) * 60.0)
+       + CAST(SUBSTR(best_lap, INSTR(best_lap, ':') + 1) AS REAL)
+  END
+`;
 
 function isFresh(timestamp: string | null | undefined): boolean {
   if (!timestamp) return false;
@@ -106,17 +113,36 @@ function mapGridRepRowsForResponse(rows: GridRepResult[], customerId: number) {
 async function loadLocalResults(db: D1Database, driverId: number, limit: number) {
   return db
     .prepare(
-      `SELECT id, source, source_result_id as sourceResultId, iracing_customer_id as iracingCustomerId,
-              subsession_id as subsessionId, driver_name as driverName, team_name as teamName, series, track,
-              car, car_class as carClass, qualifying_position as qualifyingPosition, start_position as startPosition,
-              finish_position as finishPosition, class_position as classPosition, field_size as fieldSize,
-              class_field_size as classFieldSize, laps_completed as lapsCompleted, best_lap as bestLap,
-              incidents, strength_of_field as strengthOfField, irating_change as iratingChange,
-              license_change as licenseChange, official, result_url as resultUrl, completed_at as completedAt,
-              updated_at as updatedAt, created_at as createdAt
-       FROM results
-       WHERE driver_id = ?
-       ORDER BY datetime(completed_at) DESC, id DESC
+      `WITH ranked_results AS (
+         SELECT id, source, source_result_id as sourceResultId, iracing_customer_id as iracingCustomerId,
+                subsession_id as subsessionId, driver_name as driverName, team_name as teamName, series, track,
+                car, car_class as carClass, qualifying_position as qualifyingPosition, start_position as startPosition,
+                finish_position as finishPosition, class_position as classPosition, field_size as fieldSize,
+                class_field_size as classFieldSize, laps_completed as lapsCompleted, best_lap as bestLap,
+                incidents, strength_of_field as strengthOfField, irating_change as iratingChange,
+                license_change as licenseChange, official, result_url as resultUrl, completed_at as completedAt,
+                updated_at as updatedAt, created_at as createdAt,
+                ROW_NUMBER() OVER (
+                  PARTITION BY
+                    COALESCE(NULLIF(TRIM(series), ''), 'unknown-series'),
+                    strftime('%Y-%W', COALESCE(completed_at, created_at))
+                  ORDER BY
+                    CASE WHEN class_position IS NULL OR class_position <= 0 THEN 1 ELSE 0 END ASC,
+                    CASE WHEN class_position IS NULL OR class_position <= 0 THEN 999999 ELSE class_position END ASC,
+                    ${BEST_LAP_SORT_SQL} ASC,
+                    datetime(COALESCE(completed_at, created_at)) DESC,
+                    id DESC
+                ) AS weeklyRank
+         FROM results
+         WHERE driver_id = ?
+       )
+       SELECT id, source, sourceResultId, iracingCustomerId, subsessionId, driverName, teamName, series, track,
+              car, carClass, qualifyingPosition, startPosition, finishPosition, classPosition, fieldSize,
+              classFieldSize, lapsCompleted, bestLap, incidents, strengthOfField, iratingChange,
+              licenseChange, official, resultUrl, completedAt, updatedAt, createdAt
+       FROM ranked_results
+       WHERE weeklyRank = 1
+       ORDER BY datetime(COALESCE(completedAt, createdAt)) DESC, id DESC
        LIMIT ?`
     )
     .bind(driverId, limit)
@@ -246,7 +272,7 @@ export async function onRequestGet(context: Context) {
 
   const slug = context.params.slug;
   const url = new URL(context.request.url);
-  const limit = Math.max(1, Math.min(20, toInt(url.searchParams.get("limit"), 10)));
+  const limit = Math.max(1, Math.min(20, toInt(url.searchParams.get("limit"), 20)));
 
   const driver = await db.prepare(
     `SELECT id, name, slug, iracing_customer_id as iracingCustomerId
@@ -261,56 +287,19 @@ export async function onRequestGet(context: Context) {
   }
 
   const results = await loadLocalResults(db, driver.id, limit);
-
   const localResults = results.results ?? [];
-  const hasIncompleteGridrepDetails = localResults.some((row) =>
-    row.source === "gridrep" &&
-    (
-      row.startPosition === null ||
-      row.classPosition === null ||
-      row.incidents === null ||
-      row.bestLap === null
-    )
-  );
-  const newestLocalTimestamp = localResults.reduce<string | null>((latest, row) => {
-    const candidate = typeof row.updatedAt === "string" && row.updatedAt.length > 0
-      ? row.updatedAt
-      : typeof row.createdAt === "string" && row.createdAt.length > 0
-        ? row.createdAt
-        : null;
 
-    if (!candidate) return latest;
-    if (!latest) return candidate;
-    return Date.parse(candidate) > Date.parse(latest) ? candidate : latest;
-  }, null);
+  // Calculate cache freshness
+  const cachedAt = localResults.length > 0 && localResults[0].updatedAt
+    ? localResults[0].updatedAt
+    : new Date().toISOString();
+  const cachedMinutesAgo = Math.floor((Date.now() - new Date(cachedAt).getTime()) / 60000);
 
-  const hasEnoughLocalResults = localResults.length >= limit;
-  if (
-    (!driver.iracingCustomerId || (isFresh(newestLocalTimestamp) && hasEnoughLocalResults && !hasIncompleteGridrepDetails)) &&
-    localResults.length > 0
-  ) {
-    return json({ driver, results: localResults });
-  }
-
-  if (!driver.iracingCustomerId) {
-    return json({ driver, results: localResults });
-  }
-
-  const remote = await fetchGridRepResults(context, driver.iracingCustomerId, limit);
-  if (remote.rows.length > 0) {
-    try {
-      await upsertGridRepResults(db, driver, remote.rows);
-      const refreshed = await loadLocalResults(db, driver.id, limit);
-      const refreshedRows = refreshed.results ?? [];
-      if (refreshedRows.length > 0) {
-        return json({ driver, results: refreshedRows });
-      }
-    } catch {
-      // Fall back to the freshly fetched upstream rows below.
-    }
-
-    return json({ driver, results: mapGridRepRowsForResponse(remote.rows, driver.iracingCustomerId) });
-  }
-
-  return json({ driver, results: localResults });
+  return json({
+    driver,
+    results: localResults,
+    cachedAt,
+    cachedMinutesAgo,
+    isFresh: cachedMinutesAgo <= 60,
+  });
 }

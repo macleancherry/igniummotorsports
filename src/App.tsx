@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, NavLink, Route, Routes } from "react-router-dom";
+import { CacheProvider } from "./lib/cache-context";
 import { AboutPage } from "./pages/AboutPage";
 import { DriverProfilePage } from "./pages/DriverProfilePage";
 import { DriversPage } from "./pages/DriversPage";
@@ -46,35 +47,46 @@ export default function App() {
   }, []);
 
   return (
-    <div className="site-shell">
-      <header className="site-header">
-        <Link className="brand" to="/">
-          <img className="brand-logo" src="/ignium-wordmark.svg" alt="Ignium Motorsport" />
-          <span className="brand-text">
-            <small>Race Control Platform</small>
-          </span>
-        </Link>
-        <nav className="top-nav" aria-label="Main navigation">
-          {navItems.map((item) => (
-            <NavLink key={item.to} to={item.to} className={({ isActive }) => (isActive ? "is-active" : "")} end={item.to === "/"}>
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-      </header>
+    <CacheProvider>
+      <div className="app-root">
+        <header className="site-header">
+          <div className="site-header-inner">
+            <Link className="logo-lockup" to="/">
+              <img src="/ignium-wordmark.svg" alt="Ignium Motorsport" />
+            </Link>
 
-      <main className="main-content">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/news" element={<NewsPage />} />
-          <Route path="/news/:slug" element={<NewsArticlePage />} />
-          <Route path="/drivers" element={<DriversPage />} />
-          <Route path="/drivers/:slug" element={<DriverProfilePage />} />
-          <Route path="/results" element={<ResultsPage />} />
-          <Route path="/live" element={<LivePage />} />
-        </Routes>
-      </main>
-    </div>
+            <nav className="site-nav" aria-label="Main navigation">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) => {
+                    const classes = [isActive ? "active" : ""];
+                    if (item.to === "/live") classes.push("live-nav-link");
+                    return classes.join(" ").trim();
+                  }}
+                  end={item.to === "/"}
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
+        </header>
+
+        <main className="app-main">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/news" element={<NewsPage />} />
+            <Route path="/news/:slug" element={<NewsArticlePage />} />
+            <Route path="/drivers" element={<DriversPage />} />
+            <Route path="/drivers/:slug" element={<DriverProfilePage />} />
+            <Route path="/results" element={<ResultsPage />} />
+            <Route path="/live" element={<LivePage />} />
+          </Routes>
+        </main>
+      </div>
+    </CacheProvider>
   );
 }

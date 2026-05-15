@@ -29,16 +29,55 @@ export function NewsArticlePage() {
 
   return (
     <article className="page-wrap prose">
-      <p>
-        <Link to="/news">Back to news</Link>
-      </p>
+      <div style={{ marginBottom: "2rem" }}>
+        <Link to="/news" style={{ color: "var(--ignium-blue)", textDecoration: "none", fontSize: "0.9rem" }}>
+          ← Back to news
+        </Link>
+      </div>
+
       {loading && <p>Loading article...</p>}
       {error && <p className="error">{error}</p>}
       {post && (
         <>
-          <h1>{post.title}</h1>
-          <p className="muted">{post.author ?? "Ignium Motorsport"}</p>
-          <p>{post.bodyMarkdown}</p>
+          {post.publishedAt && (
+            <p className="kicker">
+              {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </p>
+          )}
+          <h1 style={{ marginTop: "0.5rem" }}>{post.title}</h1>
+          {post.author && (
+            <p className="muted" style={{ fontSize: "0.9rem", marginTop: "0.5rem" }}>
+              By {post.author}
+            </p>
+          )}
+          {post.coverImageUrl && (
+            <div className="news-article-cover-wrap" style={{ marginTop: "1.25rem" }}>
+              <img
+                src={post.coverImageUrl}
+                alt={post.title}
+                className="news-article-cover"
+                loading="eager"
+                decoding="async"
+              />
+            </div>
+          )}
+          <div style={{ borderTop: "1px solid var(--ignium-border)", paddingTop: "1.5rem", marginTop: "1.5rem" }}>
+            <p style={{ whiteSpace: "pre-wrap", lineHeight: "1.75" }}>{post.bodyMarkdown}</p>
+          </div>
+          <div style={{ borderTop: "1px solid var(--ignium-border)", paddingTop: "1.5rem", marginTop: "2rem" }}>
+            <div className="link-row">
+              <Link className="btn-primary" to="/live">
+                Open Live Race Control
+              </Link>
+              <Link className="btn-ghost" to="/results">
+                View Results
+              </Link>
+            </div>
+          </div>
         </>
       )}
     </article>
