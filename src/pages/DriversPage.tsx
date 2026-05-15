@@ -3,6 +3,17 @@ import { Link } from "react-router-dom";
 import { getDrivers } from "../lib/api";
 import type { Driver } from "../lib/types";
 
+function formatDriverName(name: string): { first: string; last: string } {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) {
+    return { first: "Driver", last: "Unknown" };
+  }
+  if (parts.length === 1) {
+    return { first: parts[0], last: "" };
+  }
+  return { first: parts[0], last: parts.slice(1).join(" ") };
+}
+
 export function DriversPage() {
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,32 +38,80 @@ export function DriversPage() {
   }, []);
 
   return (
-    <section className="page-wrap">
-      <h1>Drivers</h1>
-      {loading && <p>Loading drivers...</p>}
-      {error && <p className="error">{error}</p>}
-      <div className="grid cards-3">
-        {drivers.map((driver) => (
-          <article className="card" key={driver.id}>
-            {driver.avatarUrl && <img src={driver.avatarUrl} alt={driver.name} className="avatar" />}
-            <h2>{driver.name}</h2>
-            <p>#{driver.raceNumber ?? "-"} • {driver.country ?? "Unknown"}</p>
-            <p>{driver.bio}</p>
-            <p>
-              Sessions {driver.totalSessions ?? 0} • Wins {driver.wins ?? 0} • Podiums {driver.podiums ?? 0}
-            </p>
-            <p>
-              Best finish P{driver.bestFinishPosition ?? "-"}
-              {driver.irating ? ` • iRating ${driver.irating}` : ""}
-            </p>
-            <div className="link-row">
-              {driver.twitchUrl && <a href={driver.twitchUrl} target="_blank" rel="noreferrer">Twitch</a>}
-              {driver.youtubeUrl && <a href={driver.youtubeUrl} target="_blank" rel="noreferrer">YouTube</a>}
+    <>
+      <section className="section compact subpage-hero">
+        <div className="page-shell">
+          <div className="eyebrow">Roster</div>
+          <h1 className="subpage-title">Drivers</h1>
+          <p className="subpage-intro">
+            Meet the drivers representing Ignium Motorsport across endurance racing and top-level iRacing competition.
+          </p>
+        </div>
+      </section>
+
+      <section className="section compact drivers-section">
+        <div className="page-shell">
+          {loading ? (
+            <div className="empty-state">
+              <h3>Loading Drivers</h3>
+              <p>Fetching the latest driver roster and stats.</p>
             </div>
-            <Link to={`/drivers/${driver.slug}`}>Driver profile</Link>
-          </article>
-        ))}
-      </div>
-    </section>
+          ) : null}
+
+          {error ? (
+            <div className="empty-state">
+              <h3>Data Loading Notice</h3>
+              <p>{error}</p>
+            </div>
+          ) : null}
+
+          {!loading && !error && drivers.length === 0 ? (
+            <div className="empty-state">
+              <h3>No Drivers Found</h3>
+              <p>The roster is currently empty. Please check back shortly.</p>
+            </div>
+          ) : null}
+
+          {!loading && !error && drivers.length > 0 ? (
+            <div className="driver-grid">
+              {drivers.map((driver) => {
+                const name = formatDriverName(driver.name);
+                return (
+                  <Link key={driver.id} className="driver-card" to={`/drivers/${driver.slug}`}>
+                    <div className="driver-number-watermark">{driver.raceNumber ?? "--"}</div>
+
+                    {driver.avatarUrl ? (
+                      <img className="driver-image" src={driver.avatarUrl} alt={driver.name} />
+                    ) : null}
+
+                    <div className="driver-info">
+                      <h3>
+                        {name.first}
+                        <span className="surname">{name.last}</span>
+                      </h3>
+                      <div className="driver-race-number">{driver.raceNumber ?? "--"}</div>
+                      <div className="driver-meta">
+                        <span>{driver.country ?? "PRO"}</span>
+                        <span>W {driver.wins ?? 0}</span>
+                        <span>P {driver.podiums ?? 0}</span>
+                        <span>iR {driver.irating ?? "-"}</span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          ) : null}
+
+          {!loading && !error && drivers.length > 0 ? (
+            <div className="button-row" style={{ justifyContent: "center" }}>
+              <Link className="button-primary" to="/live">
+                Open Live Race Control
+              </Link>
+            </div>
+          ) : null}
+        </div>
+      </section>
+    </>
   );
 }

@@ -28,58 +28,73 @@ export function NewsArticlePage() {
   }, [slug]);
 
   return (
-    <article className="page-wrap prose">
-      <div style={{ marginBottom: "2rem" }}>
-        <Link to="/news" style={{ color: "var(--ignium-blue)", textDecoration: "none", fontSize: "0.9rem" }}>
-          ← Back to news
-        </Link>
-      </div>
+    <section className="section compact">
+      <div className="page-shell">
+        <div className="button-row" style={{ marginTop: 0, marginBottom: 18 }}>
+          <Link className="button-ghost" to="/news">
+            Back To News
+          </Link>
+        </div>
 
-      {loading && <p>Loading article...</p>}
-      {error && <p className="error">{error}</p>}
-      {post && (
-        <>
-          {post.publishedAt && (
-            <p className="kicker">
-              {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
-            </p>
-          )}
-          <h1 style={{ marginTop: "0.5rem" }}>{post.title}</h1>
-          {post.author && (
-            <p className="muted" style={{ fontSize: "0.9rem", marginTop: "0.5rem" }}>
-              By {post.author}
-            </p>
-          )}
-          {post.coverImageUrl && (
-            <div className="news-article-cover-wrap" style={{ marginTop: "1.25rem" }}>
-              <img
-                src={post.coverImageUrl}
-                alt={post.title}
-                className="news-article-cover"
-                loading="eager"
-                decoding="async"
-              />
-            </div>
-          )}
-          <div style={{ borderTop: "1px solid var(--ignium-border)", paddingTop: "1.5rem", marginTop: "1.5rem" }}>
-            <p style={{ whiteSpace: "pre-wrap", lineHeight: "1.75" }}>{post.bodyMarkdown}</p>
+        {loading ? (
+          <div className="empty-state">
+            <h3>Loading Article</h3>
+            <p>Fetching story content.</p>
           </div>
-          <div style={{ borderTop: "1px solid var(--ignium-border)", paddingTop: "1.5rem", marginTop: "2rem" }}>
-            <div className="link-row">
-              <Link className="btn-primary" to="/live">
+        ) : null}
+
+        {error ? (
+          <div className="empty-state">
+            <h3>Data Loading Notice</h3>
+            <p>{error}</p>
+          </div>
+        ) : null}
+
+        {post ? (
+          <article className="panel article-shell">
+            <div className="eyebrow">News Article</div>
+            <h1 className="subpage-title">{post.title}</h1>
+
+            <p className="data-caption">
+              {post.author ? `By ${post.author}` : "Ignium Motorsport"}
+              {post.publishedAt
+                ? ` • ${new Date(post.publishedAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}`
+                : ""}
+            </p>
+
+            {post.coverImageUrl ? (
+              <div className="news-article-cover-wrap">
+                <img
+                  src={post.coverImageUrl}
+                  alt={post.title}
+                  className="news-article-cover"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+            ) : null}
+
+            <div className="article-body">
+              {(post.bodyMarkdown ?? "").split(/\n\n+/).map((paragraph, index) => (
+                <p key={`${post.id}-${index}`}>{paragraph}</p>
+              ))}
+            </div>
+
+            <div className="button-row">
+              <Link className="button-primary" to="/live">
                 Open Live Race Control
               </Link>
-              <Link className="btn-ghost" to="/results">
+              <Link className="button-secondary" to="/results">
                 View Results
               </Link>
             </div>
-          </div>
-        </>
-      )}
-    </article>
+          </article>
+        ) : null}
+      </div>
+    </section>
   );
 }

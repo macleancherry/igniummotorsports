@@ -2,85 +2,80 @@ import { Link } from "react-router-dom";
 
 export function AboutPage() {
   return (
-    <section className="page-wrap prose about-page">
-      <h1>Racing with Purpose</h1>
-      <p style={{ fontSize: "1.1rem", lineHeight: "1.75" }}>
-        Ignium Motorsport was built for drivers who want to improve, compete and represent something bigger than an
-        individual result. We race with purpose.
-      </p>
-
-      <h2 style={{ marginTop: "2rem" }}>Our Foundation: Three Core Values</h2>
-
-      <div className="values-section">
-        <div className="value-card">
-          <h3>Hard Work</h3>
-          <p>
-            In racing you have good luck and bad luck, but there is no denying that to succeed you have to practice.
-            Ignium Motorsport is willing to put the practice in to better the drivers and the team. Luck changes.
-            Preparation compounds.
+    <>
+      <section className="section compact subpage-hero">
+        <div className="page-shell">
+          <div className="eyebrow">About Ignium Motorsport</div>
+          <h1 className="subpage-title">Racing With Purpose</h1>
+          <p className="subpage-intro">
+            Ignium Motorsport is an iRacing endurance team built on three core morals: hard work, dedication, and
+            positivity. We are committed to continuous improvement, professional conduct, and bringing passion to
+            every lap.
           </p>
         </div>
+      </section>
 
-        <div className="value-card">
-          <h3>Dedication</h3>
-          <p>
-            Everyone has to work and juggle family time alongside racing, but the team is committed to making sure
-            Ignium Motorsport is not associated with unsportsmanlike conduct or poor behaviour. We lead by example in
-            every session, every race, every series.
-          </p>
+      <section className="section compact values-section">
+        <div className="page-shell">
+          <h2 className="values-title">Our Foundation: Three Core Values</h2>
+          <div className="value-grid">
+            <article className="value-card">
+              <div className="value-icon">🔨</div>
+              <div>
+                <h3>Hard Work</h3>
+                <p>
+                  Racing includes both good luck and bad luck, but success is earned through practice and preparation.
+                  We put in the work to improve every driver and strengthen the team.
+                </p>
+              </div>
+            </article>
+
+            <article className="value-card">
+              <div className="value-icon">💪</div>
+              <div>
+                <h3>Dedication</h3>
+                <p>
+                  We balance careers, family, and racing while staying focused on professional, sportsmanlike conduct.
+                  We represent Ignium with standards we can be proud of.
+                </p>
+              </div>
+            </article>
+
+            <article className="value-card">
+              <div className="value-icon">⚡</div>
+              <div>
+                <h3>Positivity</h3>
+                <p>
+                  Wins and setbacks are both opportunities to learn. We stay positive under pressure and turn difficult
+                  races into fuel for stronger performances.
+                </p>
+              </div>
+            </article>
+          </div>
         </div>
+      </section>
 
-        <div className="value-card">
-          <h3>Positivity</h3>
-          <p>
-            Racing brings good luck and bad luck. Ignium remains positive, reflects on what could be done differently
-            next time, and uses negative moments to become better and come back stronger. Every result is a step
-            forward.
-          </p>
+      <section className="section compact">
+        <div className="page-shell">
+          <div className="panel subpage-copy">
+            <h2>Our Mission</h2>
+            <p>
+              We believe that by living these three morals, Ignium has the potential to excel and inspire others.
+              This platform brings together streams, result history, driver profiles, and live timing into one race
+              control hub where performance is visible and accountable.
+            </p>
+            <p className="subpage-highlight">Ignite Your PASSION</p>
+            <div className="button-row">
+              <Link className="button-primary" to="/live">
+                Open Live Race Control
+              </Link>
+              <Link className="button-secondary" to="/drivers">
+                Meet the Drivers
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <h2 style={{ marginTop: "2rem" }}>Our Attitude to Racing</h2>
-      <p>
-        Ignium Motorsport competes at iRacing's highest levels across multiple series. We focus on:
-      </p>
-      <ul>
-        <li>
-          <strong>Preparation:</strong> Disciplined practice, data review, and continuous improvement between races.
-        </li>
-        <li>
-          <strong>Respect:</strong> Professional, sportsmanlike conduct in every session. Racing is how we represent
-          ourselves and our team.
-        </li>
-        <li>
-          <strong>Progress:</strong> Learning from every race—wins and losses alike. We use hard races as fuel to come
-          back stronger.
-        </li>
-        <li>
-          <strong>Balance:</strong> We race seriously while balancing real life. Racing shouldn't come at the cost of
-          family, work or well-being.
-        </li>
-      </ul>
-
-      <h2 style={{ marginTop: "2rem" }}>Ignite Your Passion</h2>
-      <p style={{ fontSize: "1.05rem", fontWeight: 600, color: "var(--ignium-blue)" }}>
-        Based on hard work, dedication and positivity, Ignium Motorsport has the potential to excel and ignite the
-        passion of every driver who wears the colours.
-      </p>
-
-      <p>
-        This platform brings together live timing, driver profiles, race results and team news into one cohesive race
-        control hub where our journey is visible and accountable.
-      </p>
-
-      <div className="link-row" style={{ marginTop: "2rem" }}>
-        <Link className="btn-primary" to="/live">
-          Open Live Race Control
-        </Link>
-        <Link className="btn-ghost" to="/drivers">
-          Meet the Drivers
-        </Link>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -26,21 +26,73 @@ export function NewsPage() {
   }, []);
 
   return (
-    <section className="page-wrap">
-      <h1>News</h1>
-      {loading && <p>Loading news...</p>}
-      {error && <p className="error">{error}</p>}
-      {!loading && !error && posts.length === 0 && <p>No news yet.</p>}
-      <div className="stack">
-        {posts.map((post) => (
-          <article className="panel" key={post.id}>
-            <h2>{post.title}</h2>
-            <p>{post.excerpt}</p>
-            <p className="muted">{post.author ?? "Ignium Motorsport"}</p>
-            <Link to={`/news/${post.slug}`}>Read article</Link>
-          </article>
-        ))}
-      </div>
-    </section>
+    <>
+      <section className="section compact subpage-hero">
+        <div className="page-shell">
+          <div className="eyebrow">Team Updates</div>
+          <h1 className="subpage-title">News</h1>
+          <p className="subpage-intro">
+            Race reports, announcements, and behind-the-scenes updates from Ignium Motorsport.
+          </p>
+        </div>
+      </section>
+
+      <section className="section compact">
+        <div className="page-shell">
+          {loading ? (
+            <div className="empty-state">
+              <h3>Loading News</h3>
+              <p>Fetching the latest updates.</p>
+            </div>
+          ) : null}
+
+          {error ? (
+            <div className="empty-state">
+              <h3>Data Loading Notice</h3>
+              <p>{error}</p>
+            </div>
+          ) : null}
+
+          {!loading && !error && posts.length === 0 ? (
+            <div className="empty-state">
+              <h3>No News Yet</h3>
+              <p>There are no published updates right now.</p>
+            </div>
+          ) : null}
+
+          {!loading && !error && posts.length > 0 ? (
+            <div className="news-grid">
+              {posts.map((post) => (
+                <article
+                  key={post.id}
+                  className="news-card"
+                  style={
+                    post.coverImageUrl
+                      ? {
+                          backgroundImage: `linear-gradient(180deg, transparent 0%, rgba(3, 6, 9, 0.88) 68%), radial-gradient(circle at 80% 0%, rgba(0, 184, 248, 0.16), transparent 35%), url(${post.coverImageUrl})`,
+                          backgroundSize: "auto, auto, cover",
+                          backgroundPosition: "center, center, center",
+                        }
+                      : undefined
+                  }
+                >
+                  <div className="news-meta">
+                    {post.author ?? "Ignium Motorsport"}
+                    {post.publishedAt ? ` • ${new Date(post.publishedAt).toLocaleDateString()}` : ""}
+                  </div>
+                  <h3>{post.title}</h3>
+                  <p>{post.excerpt ?? "Read the full update."}</p>
+                  <div className="button-row">
+                    <Link className="button-secondary" to={`/news/${post.slug}`}>
+                      Read Article
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : null}
+        </div>
+      </section>
+    </>
   );
 }
