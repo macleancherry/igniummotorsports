@@ -381,13 +381,8 @@ p {
   position: absolute;
   left: -4vw;
   right: -4vw;
-  bottom: -68px;
-  height: 138px;
-  background: var(--ignium-black);
-  border-top: 2px solid var(--ignium-blue);
-  transform: skewY(-4.2deg);
-  transform-origin: left top;
-  z-index: 2;
+    bottom: calc(-68px - 12vw);
+    height: calc(138px + 12vw);
 }
 
 .hero-inner {

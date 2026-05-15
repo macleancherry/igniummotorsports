@@ -262,11 +262,13 @@ export function HomePage() {
 
             <div>
               <h4>Stay Connected</h4>
-              <p>Get the latest news, results and behind-the-scenes updates.</p>
-              <form className="newsletter-form" onSubmit={(event) => event.preventDefault()}>
-                <input type="email" placeholder="Enter your email" aria-label="Email" />
-                <button type="submit">›</button>
-              </form>
+              <p>Follow us on socials for the latest news, results and behind-the-scenes updates.</p>
+              <div className="footer-links" style={{ marginTop: "0.75rem" }}>
+                <a href="https://discord.gg/ignium" target="_blank" rel="noopener noreferrer">Discord</a>
+                <a href="https://www.instagram.com/ignium_motorsport" target="_blank" rel="noopener noreferrer">Instagram</a>
+                <a href="https://www.youtube.com/@igniummotorsport" target="_blank" rel="noopener noreferrer">YouTube</a>
+                <a href="https://www.twitch.tv/igniumotorsport" target="_blank" rel="noopener noreferrer">Twitch</a>
+              </div>
             </div>
           </div>
 
