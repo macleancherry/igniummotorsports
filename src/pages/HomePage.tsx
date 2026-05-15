@@ -68,9 +68,20 @@ export function HomePage() {
 
           <aside className="next-race-card">
             <div className="eyebrow">Next race</div>
-            <h3>{liveEvent?.series ?? "IMSA Sim Racing Series"}</h3>
-            <p>Round 4 - {liveEvent?.track ?? "Watkins Glen"}</p>
-            <div className="track-outline" />
+            <h3>{liveEvent?.series ?? "Six Hours of The Glen"}</h3>
+            <p>{liveEvent?.track ?? "Watkins Glen International"}</p>
+            <svg className="track-outline" viewBox="0 0 200 150" fill="none" aria-label="Watkins Glen track layout">
+              {/* Watkins Glen International – full Boot layout */}
+              <path
+                d="M 14,138 L 96,138 Q 112,138 116,124 Q 120,112 110,100 Q 100,88 104,76 Q 108,64 120,58 Q 132,52 148,56 Q 162,60 164,76 Q 166,88 156,94 Q 160,92 172,106 Q 182,118 176,130 Q 170,140 156,136 Q 142,132 136,118 Q 110,112 72,124 Q 44,130 14,138 Z"
+                stroke="rgba(255,255,255,0.6)"
+                strokeWidth="3.5"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+              {/* Start/finish line marker */}
+              <line x1="55" y1="134" x2="55" y2="142" stroke="rgba(0,184,248,0.9)" strokeWidth="2.5" />
+            </svg>
           </aside>
         </div>
       </section>
