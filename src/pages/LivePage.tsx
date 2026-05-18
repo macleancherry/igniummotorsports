@@ -14,6 +14,37 @@ function fmtDelta(s: number | null): string {
   return `+${s.toFixed(3)}`;
 }
 
+function formatLastLap(row: IracingLiveRow): string {
+  if (row.lastLap !== null) {
+    return fmtLapTime(row.lastLap);
+  }
+  if (row.lap <= 1) {
+    return "Opening Lap";
+  }
+  return "Invalid";
+}
+
+function formatBestLap(row: IracingLiveRow): string {
+  if (row.bestLap === null) {
+    return "N/A";
+  }
+  const lapText = row.bestLapNumber && row.bestLapNumber > 0 ? ` (L${row.bestLapNumber})` : "";
+  return `${fmtLapTime(row.bestLap)}${lapText}`;
+}
+
+function formatPitStatus(row: IracingLiveRow): string {
+  if (row.inPits) {
+    return "In Pits";
+  }
+  if (row.outLap) {
+    return "Out Lap";
+  }
+  if (row.lastPitLap && row.lastPitLap > 0) {
+    return `L${row.lastPitLap}`;
+  }
+  return "N/A";
+}
+
 export function LivePage() {
   const [event, setEvent] = useState<LiveEvent | null>(null);
   const [drivers, setDrivers] = useState<Driver[]>([]);
@@ -79,6 +110,24 @@ export function LivePage() {
   }, []);
 
   const statusClass = useMemo(() => `status-pill status-${event?.status ?? "scheduled"}`, [event?.status]);
+  const igniumDriverNames = useMemo(
+    () => new Set(drivers.map((driver) => driver.name.trim().toLowerCase()).filter(Boolean)),
+    [drivers]
+  );
+
+  const sortedIracingRows = useMemo(() => {
+    return [...iracingRows].sort((a, b) => {
+      const aClass = a.classPosition > 0 ? a.classPosition : Number.MAX_SAFE_INTEGER;
+      const bClass = b.classPosition > 0 ? b.classPosition : Number.MAX_SAFE_INTEGER;
+      if (aClass !== bClass) return aClass - bClass;
+
+      const aOverall = a.position > 0 ? a.position : Number.MAX_SAFE_INTEGER;
+      const bOverall = b.position > 0 ? b.position : Number.MAX_SAFE_INTEGER;
+      if (aOverall !== bOverall) return aOverall - bOverall;
+
+      return a.customerId - b.customerId;
+    });
+  }, [iracingRows]);
 
   if (loading) {
     return (
@@ -212,38 +261,61 @@ export function LivePage() {
 
           <article className="panel" style={{ marginTop: 20 }}>
             <h2>iRacing Live Telemetry</h2>
-            {iracingRows.length === 0 ? (
+            {sortedIracingRows.length === 0 ? (
               <p>No iRacing session detected.</p>
             ) : (
               <div className="timing-table-wrap">
                 <table className="timing-table">
                   <thead>
                     <tr>
-                      <th>Pos</th>
-                      <th>Class</th>
-                      <th>Car</th>
-                      <th>Driver</th>
+                      <th>Position</th>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>iRating</th>
                       <th>Lap</th>
-                      <th>Last Lap</th>
-                      <th>Best Lap</th>
+                      <th>Pit Status</th>
                       <th>Gap</th>
                       <th>Interval</th>
+                      <th>Fastest Lap</th>
+                      <th>Last Lap</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {iracingRows.map((row) => (
-                      <tr key={row.customerId}>
-                        <td>{row.position > 0 ? row.position : "-"}</td>
-                        <td>{row.classPosition > 0 ? row.classPosition : "-"}</td>
-                        <td>{row.carNumber || "-"}</td>
-                        <td>{row.driverName}</td>
-                        <td>{row.lap}</td>
-                        <td>{fmtLapTime(row.lastLap)}</td>
-                        <td>{fmtLapTime(row.bestLap)}</td>
-                        <td>{fmtDelta(row.gap)}</td>
-                        <td>{fmtDelta(row.interval)}</td>
-                      </tr>
-                    ))}
+                    {sortedIracingRows.map((row) => {
+                      const normalizedDriver = row.driverName.trim().toLowerCase();
+                      const normalizedTeam = (row.teamName ?? "").trim().toLowerCase();
+                      const isIgnium =
+                        igniumDriverNames.has(normalizedDriver) || normalizedTeam.includes("ignium");
+
+                      return (
+                        <tr key={row.customerId} className={isIgnium ? "ignium-row" : undefined}>
+                          <td>
+                            <strong>{row.classPosition > 0 ? row.classPosition : "-"}</strong>
+                            <div className="data-caption" style={{ marginTop: 2 }}>
+                              Overall {row.position > 0 ? row.position : "-"}
+                            </div>
+                          </td>
+                          <td>{row.carNumber || "-"}</td>
+                          <td>
+                            {row.teamName ? (
+                              <>
+                                <strong>{row.teamName}</strong>
+                                <div className="data-caption" style={{ marginTop: 2 }}>{row.driverName}</div>
+                              </>
+                            ) : (
+                              row.driverName
+                            )}
+                          </td>
+                          <td>{row.iRating ?? "N/A"}</td>
+                          <td>{row.lap}</td>
+                          <td>{formatPitStatus(row)}</td>
+                          <td>{fmtDelta(row.gap)}</td>
+                          <td>{fmtDelta(row.interval)}</td>
+                          <td>{formatBestLap(row)}</td>
+                          <td>{formatLastLap(row)}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
                 {iracingGeneratedAt ? (

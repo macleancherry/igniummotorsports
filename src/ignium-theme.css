@@ -879,6 +879,14 @@ p {
   background: rgba(0, 184, 248, 0.055);
 }
 
+.timing-table tr.ignium-row td {
+  background: rgba(0, 184, 248, 0.12);
+}
+
+.timing-table tr.ignium-row td:first-child {
+  box-shadow: inset 3px 0 0 var(--ignium-blue);
+}
+
 .news-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
