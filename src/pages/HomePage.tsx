@@ -55,9 +55,9 @@ export function HomePage() {
           <div className="hero-copy">
             <div className="eyebrow">iRacing Endurance Team</div>
             <h1 className="hero-title">
-              <span className="blue">Ignite</span>
-              <span>Your</span>
-              <span>Passion</span>
+              <span className="blue">Peace</span>
+              <span>through</span>
+              <span>Strength 🚀</span>
             </h1>
             <p className="hero-subtitle">Ignium Motorsport competes on three core values: Hard Work, Dedication, and Positivity. We race with discipline, integrity, and the drive to excel.</p>
             <div className="button-row">
