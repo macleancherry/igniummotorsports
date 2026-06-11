@@ -71,7 +71,7 @@ export async function onRequestPost(context: Context) {
     const baseUrl = (context.env.GRIDREP_API_BASE_URL ?? DEFAULT_GRIDREP_API_BASE_URL).replace(/\/$/, "");
     const gridrepUrl = `${baseUrl}/api/integrations/ignium/drivers-stats?customerIds=${customerIds.join(
       ","
-    )}&limit=100&refresh=0`;
+    )}&limit=100&refresh=1`;
 
     const gridrepResponse = await fetch(gridrepUrl, {
       method: "GET",
