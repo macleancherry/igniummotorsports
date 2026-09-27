@@ -60,66 +60,6 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="section team-intro">
-        <div className="page-shell">
-          <div className="team-intro-grid">
-            <div>
-              <h2>
-                Team <span className="text-blue">Ignium</span>
-              </h2>
-              <p>
-                Ignium Motorsport is an iRacing endurance racing team built on three core morals: hard work,
-                dedication, and positivity. We're committed to continuous improvement, professional conduct,
-                and bringing passion to every lap.
-              </p>
-              <p>
-                We believe that by living these three morals, Ignium has the potential to excel and inspire others.
-                We look forward to the journey.
-              </p>
-            </div>
-
-            <div className="telemetry-map">
-              <div className="telemetry-stats">
-                <div className="telemetry-stat"><span>Practice</span><strong>Disciplined preparation and continuous improvement</strong></div>
-                <div className="telemetry-stat"><span>Conduct</span><strong>Professional, sportsmanlike racing always</strong></div>
-                <div className="telemetry-stat"><span>Growth</span><strong>Learn from every race, positive and negative</strong></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section compact values-section">
-        <div className="page-shell">
-          <h3 className="values-title">Built On More Than Pace</h3>
-          <div className="value-grid">
-            <article className="value-card">
-              <div className="value-icon">🔨</div>
-              <div>
-                <h3>Hard Work</h3>
-                <p>We invest the time and effort needed to improve ourselves and strengthen our team. There are no shortcuts to excellence.</p>
-              </div>
-            </article>
-
-            <article className="value-card">
-              <div className="value-icon">💪</div>
-              <div>
-                <h3>Dedication</h3>
-                <p>Our commitment to professional, sportsmanlike conduct protects both our reputation and the integrity of every race.</p>
-              </div>
-            </article>
-
-            <article className="value-card">
-              <div className="value-icon">⚡</div>
-              <div>
-                <h3>Positivity</h3>
-                <p>Wins and losses are both opportunities to learn. We transform setbacks into fuel for improvement and drive forward stronger.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
       <section className="section compact">
         <div className="page-shell">
           <div className="section-header">
