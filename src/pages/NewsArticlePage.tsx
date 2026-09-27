@@ -85,10 +85,7 @@ export function NewsArticlePage() {
             </div>
 
             <div className="button-row">
-              <Link className="button-primary" to="/live">
-                Open Live Race Control
-              </Link>
-              <Link className="button-secondary" to="/results">
+              <Link className="button-primary" to="/results">
                 View Results
               </Link>
             </div>

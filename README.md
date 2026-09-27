@@ -1,73 +1,42 @@
-# React + TypeScript + Vite
+# Ignium Motorsport
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The Ignium Motorsport team website: who we are, the championships we race in, our results, our sponsors, and how to get in touch.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19 + TypeScript, built with Vite
+- Tailwind CSS v4 + a hand-rolled design system in `src/ignium-theme.css`
+- React Router v7 for client-side routing
+- Deployed to Cloudflare Pages, with a small set of Pages Functions in `functions/` backed by a Cloudflare D1 database (used only by the News page)
 
-## React Compiler
+## Development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev        # start the Vite dev server
+npm run build       # type-check and build for production
+npm run lint         # eslint
+npm run pages:dev  # run against Cloudflare Pages Functions locally (wrangler)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+For `pages:dev`, copy `.dev.vars.example` to `.dev.vars` and fill in real values.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Editing site content
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Most content is not stored in a database — it's plain, hand-editable TypeScript files under `src/data/`:
+
+- `src/data/roster.ts` — the driver roster shown on the About page
+- `src/data/championships.ts` — the championships/ladders shown on the Championships page
+- `src/data/sponsors.ts` — the sponsors/partners shown on the Sponsors page
+- `src/data/results.ts` — race results shown on the Results page (fill in details directly, or just link out to an Instagram recap post)
+
+Each file has a comment at the top describing its shape. Edit the array, commit, and redeploy.
+
+The News page is the one exception — it's still backed by Cloudflare D1 (`functions/api/news.ts`), since it already worked well as a simple, editable feed of Instagram recap posts.
+
+## Garage61 "who's racing now" status
+
+`functions/api/garage61-status.ts` is a placeholder integration with [Garage61](https://garage61.net) that will show a small "racing now" badge in the site header when a team driver is in an active session. It currently fails safe (shows nothing) until real API details are filled in:
+
+1. Set `GARAGE61_API_BASE_URL` and `GARAGE61_API_KEY` (the latter as a Pages secret via `wrangler pages secret put GARAGE61_API_KEY`, never as a plaintext var).
+2. Update the endpoint path and response mapping in `functions/api/garage61-status.ts` (marked with `TODO` comments) to match Garage61's real API.

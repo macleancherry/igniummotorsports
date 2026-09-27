@@ -1,6 +1,4 @@
-import type { Driver, IracingLiveRow, LiveEvent, LiveTimingRow, NewsPost, ResultRow } from "./types";
-
-const IRACING_LIVE_URL = "https://ignium-live-api.maclean-cherry.workers.dev/api/live";
+import type { Garage61Status, NewsPost } from "./types";
 
 const DEV_FALLBACK = import.meta.env.DEV;
 
@@ -21,66 +19,17 @@ async function fetchJson<T>(path: string): Promise<T> {
   return (await response.json()) as T;
 }
 
-const mockDrivers: Driver[] = [
-  {
-    id: 1,
-    name: "Mac Cherry",
-    slug: "mac-cherry",
-    raceNumber: "23",
-    country: "Australia",
-    bio: "Endurance-focused GT driver with a calm, data-first racecraft approach.",
-    youtubeUrl: "https://www.youtube.com/@BudgetDadRacing",
-  },
-];
-
 const mockNews: NewsPost[] = [
   {
     id: 1,
-    title: "Ignium Motorsport Launches Live Race Control",
-    slug: "ignium-live-race-control-launch",
-    excerpt: "A new operations hub for race timing, stream tracking, and results sync.",
-    bodyMarkdown: "Live Race Control is now online.",
+    title: "Ignium Motorsport Season Update",
+    slug: "ignium-season-update",
+    excerpt: "Latest news from the team.",
+    bodyMarkdown: "Latest news from the team.",
     author: "Ignium Motorsport",
     publishedAt: new Date().toISOString(),
   },
 ];
-
-const mockResults: ResultRow[] = [
-  {
-    id: 1,
-    source: "manual",
-    series: "IMSA Endurance",
-    track: "Long Beach",
-    car: "Ferrari 296 GT3",
-    startPosition: 11,
-    finishPosition: 7,
-    classPosition: 5,
-    bestLap: "1:19.083",
-    incidents: 4,
-    strengthOfField: 2850,
-    completedAt: "2026-03-28T00:00:00Z",
-  },
-];
-
-export async function getDrivers(): Promise<Driver[]> {
-  try {
-    const data = await fetchJson<{ results: Driver[] }>("/api/drivers");
-    return data.results;
-  } catch (error) {
-    if (DEV_FALLBACK) return mockDrivers;
-    throw error;
-  }
-}
-
-export async function getDriver(slug: string): Promise<Driver> {
-  const data = await fetchJson<{ result: Driver }>(`/api/drivers/${slug}`);
-  return data.result;
-}
-
-export async function getDriverResults(slug: string): Promise<ResultRow[]> {
-  const data = await fetchJson<{ results: ResultRow[] }>(`/api/drivers/${slug}/results`);
-  return data.results;
-}
 
 export async function getNews(): Promise<NewsPost[]> {
   try {
@@ -97,27 +46,14 @@ export async function getNewsArticle(slug: string): Promise<NewsPost> {
   return data.result;
 }
 
-export async function getResults(): Promise<ResultRow[]> {
+const emptyGarage61Status: Garage61Status = { activeDrivers: [] };
+
+export async function getGarage61Status(): Promise<Garage61Status> {
   try {
-    const data = await fetchJson<{ results: ResultRow[] }>("/api/results");
-    return data.results;
-  } catch (error) {
-    if (DEV_FALLBACK) return mockResults;
-    throw error;
+    return await fetchJson<Garage61Status>("/api/garage61-status");
+  } catch {
+    return emptyGarage61Status;
   }
-}
-
-export async function getLive(): Promise<{ event: LiveEvent | null; drivers: Driver[] }> {
-  return fetchJson<{ event: LiveEvent | null; drivers: Driver[] }>("/api/live");
-}
-
-export async function getTiming(eventId: number): Promise<LiveTimingRow[]> {
-  const data = await fetchJson<{ rows: LiveTimingRow[] }>(`/api/timing/${eventId}`);
-  return data.rows;
-}
-
-export async function getIracingLive(): Promise<{ ok: boolean; rows: IracingLiveRow[]; generatedAt: string }> {
-  return fetchJson<{ ok: boolean; rows: IracingLiveRow[]; generatedAt: string }>(IRACING_LIVE_URL);
 }
 
 export { ApiError };

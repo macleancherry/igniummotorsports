@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { roster } from "../data/roster";
 
 export function AboutPage() {
   return (
@@ -55,22 +56,40 @@ export function AboutPage() {
         </div>
       </section>
 
+      <section className="section compact" id="roster">
+        <div className="page-shell">
+          <div className="section-header">
+            <h2>Roster</h2>
+            <div className="eyebrow">The Team</div>
+          </div>
+          <div className="lineup">
+            {roster.map((member) => (
+              <div key={member.name} className="lineup-item">
+                <span>{member.name}</span>
+                <span className="muted">
+                  {[member.raceNumber ? `#${member.raceNumber}` : null, member.carClass].filter(Boolean).join(" · ")}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="section compact">
         <div className="page-shell">
           <div className="panel subpage-copy">
             <h2>Our Mission</h2>
             <p>
               We believe that by living these three morals, Ignium has the potential to excel and inspire others.
-              This platform brings together streams, result history, driver profiles, and live timing into one race
-              control hub where performance is visible and accountable.
+              We race hard, represent our sponsors well, and look forward to the journey ahead.
             </p>
             <p className="subpage-highlight">Ignite Your PASSION</p>
             <div className="button-row">
-              <Link className="button-primary" to="/live">
-                Open Live Race Control
+              <Link className="button-primary" to="/results">
+                View Results
               </Link>
-              <Link className="button-secondary" to="/drivers">
-                Meet the Drivers
+              <Link className="button-secondary" to="/sponsors">
+                Partner With Us
               </Link>
             </div>
           </div>

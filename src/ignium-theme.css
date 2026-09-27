@@ -264,23 +264,42 @@ p {
   width: 100%;
 }
 
-.site-nav .live-nav-link {
-  padding: 11px 15px;
-  border: 1px solid rgba(0, 184, 248, 0.42);
-  background: rgba(0, 184, 248, 0.08);
-  color: var(--ignium-white);
-  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  padding: 7px 11px;
+  color: var(--ignium-positive);
+  background: rgba(55, 230, 163, 0.1);
+  border: 1px solid rgba(55, 230, 163, 0.28);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-.site-nav .live-nav-link::before {
+.status-pill.live::before {
   content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  margin-right: 9px;
+  width: 7px;
+  height: 7px;
   border-radius: 999px;
-  background: var(--ignium-blue);
-  box-shadow: 0 0 16px var(--ignium-blue);
+  background: var(--ignium-positive);
+  box-shadow: 0 0 16px var(--ignium-positive);
+  animation: livePulse 1.4s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.82);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
 }
 
 .button-row {
@@ -429,8 +448,7 @@ p {
   color: var(--ignium-silver);
 }
 
-.next-race-card,
-.live-status-card {
+.next-race-card {
   position: relative;
   align-self: end;
   padding: 24px;
@@ -443,27 +461,17 @@ p {
   clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
 }
 
-.next-race-card h3,
-.live-status-card h3 {
+.next-race-card h3 {
   margin: 12px 0 8px;
   font-size: 1.3rem;
   line-height: 1.1;
   text-transform: uppercase;
 }
 
-.next-race-card p,
-.live-status-card p {
+.next-race-card p {
   margin: 0;
   color: var(--ignium-silver);
 }
-
-.track-outline {
-    width: 130px;
-    height: 98px;
-    margin-top: 18px;
-    opacity: 0.9;
-    display: block;
-  }
 
 .panel,
 .card,
@@ -623,268 +631,6 @@ p {
 .value-card p {
   margin: 0;
   font-size: 0.94rem;
-}
-
-.drivers-section {
-  background:
-    radial-gradient(circle at 85% 10%, rgba(0, 184, 248, 0.12), transparent 30%),
-    var(--ignium-black);
-}
-
-.driver-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.driver-card {
-  position: relative;
-  min-height: 230px;
-  padding: 22px;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.025)),
-    #09131f;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  overflow: hidden;
-  transition:
-    transform 180ms ease,
-    border-color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.driver-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(0, 184, 248, 0.46);
-  box-shadow: 0 20px 60px rgba(0, 184, 248, 0.12);
-}
-
-.driver-card::before {
-  content: "";
-  position: absolute;
-  inset: auto 0 0 auto;
-  width: 72px;
-  height: 72px;
-  border-right: 3px solid var(--ignium-blue);
-  border-bottom: 3px solid var(--ignium-blue);
-  opacity: 0.92;
-}
-
-.driver-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(135deg, transparent 0 55%, rgba(0, 184, 248, 0.08) 55.4%, transparent 56%),
-    linear-gradient(45deg, transparent 0 63%, rgba(255, 255, 255, 0.04) 63.4%, transparent 64%);
-  background-size: 80px 80px;
-  opacity: 0.34;
-  pointer-events: none;
-}
-
-.driver-number-watermark,
-.number-watermark {
-  position: absolute;
-  top: 14px;
-  left: 18px;
-  color: rgba(255, 255, 255, 0.085);
-  font-size: 5rem;
-  font-weight: 950;
-  line-height: 1;
-  letter-spacing: -0.08em;
-  z-index: 0;
-}
-
-.driver-image {
-  position: absolute;
-  right: -8px;
-  bottom: 0;
-  width: 64%;
-  max-height: 94%;
-  object-fit: contain;
-  object-position: bottom right;
-  z-index: 1;
-  filter: saturate(0.92) contrast(1.08);
-}
-
-.driver-info {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  min-height: 186px;
-  flex-direction: column;
-  justify-content: end;
-  max-width: 58%;
-}
-
-.driver-info h3 {
-  margin: 0;
-  font-size: 1.15rem;
-  text-transform: uppercase;
-}
-
-.driver-info .surname {
-  display: block;
-  font-size: 1.55rem;
-  color: var(--ignium-white);
-}
-
-.driver-race-number {
-  margin-top: 8px;
-  color: var(--ignium-blue);
-  font-size: 2rem;
-  font-weight: 950;
-  letter-spacing: -0.04em;
-}
-
-.driver-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-  color: var(--ignium-silver);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-
-.live-race-control {
-  position: relative;
-  padding: 86px 0;
-  background:
-    radial-gradient(circle at 85% 40%, rgba(0, 184, 248, 0.18), transparent 32%),
-    linear-gradient(180deg, #05070a, #07111d);
-  overflow: hidden;
-}
-
-.live-race-control::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.32;
-  background-image:
-    linear-gradient(rgba(0, 184, 248, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 184, 248, 0.08) 1px, transparent 1px);
-  background-size: 42px 42px;
-}
-
-.live-panel {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(260px, 0.42fr) minmax(0, 0.78fr);
-  gap: 32px;
-  padding: 36px;
-  border: 1px solid rgba(0, 184, 248, 0.38);
-  background:
-    linear-gradient(135deg, rgba(0, 184, 248, 0.09), rgba(255, 255, 255, 0.025)),
-    rgba(3, 6, 9, 0.88);
-  box-shadow: var(--shadow-panel);
-  clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%, 0 20px);
-}
-
-.live-panel h2 {
-  margin: 0 0 18px;
-  text-transform: uppercase;
-}
-
-.live-panel h2 span {
-  color: var(--ignium-blue);
-}
-
-.live-indicator,
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  width: fit-content;
-  padding: 7px 11px;
-  color: var(--ignium-positive);
-  background: rgba(55, 230, 163, 0.1);
-  border: 1px solid rgba(55, 230, 163, 0.28);
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.live-indicator::before,
-.status-pill.live::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: var(--ignium-positive);
-  box-shadow: 0 0 16px var(--ignium-positive);
-  animation: livePulse 1.4s ease-in-out infinite;
-}
-
-@keyframes livePulse {
-  0%,
-  100% {
-    opacity: 0.5;
-    transform: scale(0.82);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.15);
-  }
-}
-
-.timing-table-wrap,
-.table-wrap {
-  overflow-x: auto;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.2);
-}
-
-.timing-table {
-  width: 100%;
-  min-width: 860px;
-  border-collapse: collapse;
-  font-variant-numeric: tabular-nums;
-}
-
-.timing-table th,
-.timing-table td {
-  padding: 13px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.075);
-  text-align: left;
-}
-
-.timing-table th {
-  color: var(--ignium-muted);
-  font-size: 0.66rem;
-  font-weight: 900;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.035);
-}
-
-.timing-table td {
-  color: var(--ignium-silver);
-  font-size: 0.86rem;
-  font-weight: 650;
-}
-
-.timing-table td:nth-child(1),
-.timing-table td:nth-child(2),
-.timing-table td:nth-child(3) {
-  color: var(--ignium-blue);
-  font-weight: 900;
-}
-
-.timing-table tr:hover td {
-  background: rgba(0, 184, 248, 0.055);
-}
-
-.timing-table tr.ignium-row td {
-  background: rgba(0, 184, 248, 0.12);
-}
-
-.timing-table tr.ignium-row td:first-child {
-  box-shadow: inset 3px 0 0 var(--ignium-blue);
 }
 
 .news-grid {
@@ -1099,21 +845,6 @@ p {
   margin: 0 0 9px;
 }
 
-.driver-profile-head {
-  display: grid;
-  grid-template-columns: minmax(200px, 240px) minmax(0, 1fr);
-  gap: 28px;
-  align-items: center;
-}
-
-.driver-profile-avatar {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border: 1px solid rgba(0, 184, 248, 0.38);
-  background: rgba(255, 255, 255, 0.04);
-}
-
 .article-shell {
   padding: 34px;
 }
@@ -1169,37 +900,23 @@ p {
 }
 
 @media (max-width: 1080px) {
-  .driver-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
   .news-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero-inner,
   .team-intro-grid,
-  .live-panel,
   .footer-grid {
     grid-template-columns: 1fr;
   }
 
-  .next-race-card,
-  .live-status-card {
+  .next-race-card {
     align-self: auto;
     max-width: 520px;
   }
 
   .subpage-grid-3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .driver-profile-head {
-    grid-template-columns: 1fr;
-  }
-
-  .driver-profile-avatar {
-    max-width: 240px;
   }
 }
 
@@ -1262,7 +979,6 @@ p {
   }
 
   .value-grid,
-  .driver-grid,
   .news-grid {
     grid-template-columns: 1fr;
   }
@@ -1274,10 +990,6 @@ p {
 
   .value-card {
     grid-template-columns: 56px 1fr;
-  }
-
-  .driver-card {
-    min-height: 220px;
   }
 
   .section-header {
@@ -1311,18 +1023,6 @@ p {
   .button-ghost,
   .button {
     width: 100%;
-  }
-
-  .driver-info {
-    max-width: 65%;
-  }
-
-  .driver-image {
-    width: 70%;
-  }
-
-  .live-panel {
-    padding: 22px;
   }
 
   .footer-grid {
