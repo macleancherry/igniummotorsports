@@ -1,8 +1,8 @@
 /**
  * Ignium Motorsport sponsors & partners.
  *
- * Plain hand-edited list — no database, no build step. Replace the example
- * entry below with real sponsors/partners as they come on board.
+ * Plain hand-edited list — no database, no build step. Add a new entry as
+ * sponsors come on board.
  *
  * Shape:
  *   {
@@ -21,7 +21,15 @@ export type Sponsor = {
 
 export const sponsors: Sponsor[] = [
   {
-    name: "Sponsor Name",
-    tier: "Example Placeholder",
+    name: "Delta Racewear",
+    logoUrl: "/assets/delta-racewear-logo.png",
+    url: "https://deltaracewear.com/",
+    tier: "Partner",
+  },
+  {
+    name: "Pimax",
+    logoUrl: "/assets/pimax-logo.png",
+    url: "https://au.pimax.com/pages/pimax-ambassadors",
+    tier: "Partner",
   },
 ];
