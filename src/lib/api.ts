@@ -1,4 +1,4 @@
-import type { Garage61Status, NewsPost } from "./types";
+import type { Garage61Status, NewsPost, SocialPost } from "./types";
 
 const DEV_FALLBACK = import.meta.env.DEV;
 
@@ -53,6 +53,25 @@ export async function getGarage61Status(): Promise<Garage61Status> {
     return await fetchJson<Garage61Status>("/api/garage61-status");
   } catch {
     return emptyGarage61Status;
+  }
+}
+
+const mockSocialPosts: SocialPost[] = [
+  {
+    id: "dev-1",
+    imageUrl: "/assets/ignium-hero-car.png",
+    caption: "Ignium Motorsport",
+    url: "https://www.instagram.com/ignium_motorsport/",
+  },
+];
+
+export async function getSocialPosts(): Promise<SocialPost[]> {
+  try {
+    const data = await fetchJson<{ results: SocialPost[] }>("/api/social");
+    return data.results;
+  } catch (error) {
+    if (DEV_FALLBACK) return mockSocialPosts;
+    throw error;
   }
 }
 

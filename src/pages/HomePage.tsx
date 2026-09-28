@@ -1,14 +1,14 @@
 import { Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { getNews } from "../lib/api";
+import { getNews, getSocialPosts } from "../lib/api";
 import { championships } from "../data/championships";
 import { results } from "../data/results";
-import { socialPosts } from "../data/social-posts";
-import type { NewsPost } from "../lib/types";
+import type { NewsPost, SocialPost } from "../lib/types";
 
 export function HomePage() {
   const [news, setNews] = useState<NewsPost[]>([]);
+  const [socialPosts, setSocialPosts] = useState<SocialPost[]>([]);
   const [error, setError] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -24,6 +24,22 @@ export function HomePage() {
       .catch((err) => {
         if (!mounted) return;
         setError(err instanceof Error ? err.message : "Failed to load home data.");
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+
+    getSocialPosts()
+      .then((posts) => {
+        if (mounted) setSocialPosts(posts);
+      })
+      .catch(() => {
+        // Non-critical section — fail silently, grid just stays empty.
       });
 
     return () => {
