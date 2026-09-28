@@ -212,6 +212,13 @@ p {
   color: var(--ink-900);
 }
 
+.section.studio h1,
+.section.studio h2,
+.section.studio h3,
+.section.studio h4 {
+  color: var(--ink-900);
+}
+
 .section.studio p {
   color: #3a4652;
 }

@@ -1,28 +1,41 @@
 import { shopItems } from "../data/shop";
+import { useInView } from "../hooks/useInView";
+
+const SIZES = ["S", "M", "L", "XL", "XXL"];
 
 export function ShopPage() {
+  const [gridRef, gridInView] = useInView<HTMLDivElement>();
+
   return (
     <>
-      <section className="section compact subpage-hero">
+      <section className="subpage-hero">
         <div className="page-shell">
-          <div className="eyebrow">Team Merch</div>
+          <span className="eyebrow">— Team Merch</span>
           <h1 className="subpage-title">Shop</h1>
-          <p className="subpage-intro">
-            A preview of upcoming Ignium Motorsport merch — orders aren't open yet.
-          </p>
+          <p className="subpage-intro">A preview of upcoming Ignium Motorsport merch — orders aren't open yet.</p>
         </div>
       </section>
 
-      <section className="section compact">
+      <section className="section studio">
         <div className="page-shell">
-          <div className="news-grid">
+          <div ref={gridRef} className={`product-grid fade-up${gridInView ? " is-in" : ""}`}>
             {shopItems.map((item) => (
-              <article key={item.id} className="news-card">
-                <div className="news-meta">{item.price}</div>
+              <div key={item.id} className="product-card">
+                <span className="orders-tag">
+                  <span className="orders-tag-dot" aria-hidden="true" />
+                  Orders Open Soon
+                </span>
                 <h3>{item.name}</h3>
+                <span className="product-price">{item.price}</span>
                 {item.description ? <p>{item.description}</p> : null}
-                <div className="coming-soon-badge">Coming Soon</div>
-              </article>
+                <div className="size-chip-row">
+                  {SIZES.map((size) => (
+                    <span key={size} className="size-chip">
+                      {size}
+                    </span>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
