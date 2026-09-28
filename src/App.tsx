@@ -1,6 +1,7 @@
-import { Link, NavLink, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Footer } from "./components/Footer";
-import { Garage61Badge } from "./components/Garage61Badge";
+import { Header } from "./components/Header";
+import { TimingStrip } from "./components/TimingStrip";
 import { AboutPage } from "./pages/AboutPage";
 import { ContactPage } from "./pages/ContactPage";
 import { HomePage } from "./pages/HomePage";
@@ -9,44 +10,19 @@ import { NewsPage } from "./pages/NewsPage";
 import { ResultsPage } from "./pages/ResultsPage";
 import { ShopPage } from "./pages/ShopPage";
 import { SponsorsPage } from "./pages/SponsorsPage";
-
-const navItems = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/news", label: "News" },
-  { to: "/results", label: "Results" },
-  { to: "/sponsors", label: "Sponsors" },
-  { to: "/shop", label: "Shop" },
-  { to: "/contact", label: "Contact" },
-];
+import { StyleguidePage } from "./pages/StyleguidePage";
 
 export default function App() {
   return (
     <div className="app-root">
-      <header className="site-header">
-        <div className="site-header-inner">
-          <Link className="logo-lockup" to="/">
-            <img src="/ignium-wordmark.svg" alt="Ignium Motorsport" />
-          </Link>
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
 
-          <nav className="site-nav" aria-label="Main navigation">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) => (isActive ? "active" : "")}
-                end={item.to === "/"}
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
+      <TimingStrip />
+      <Header />
 
-          <Garage61Badge />
-        </div>
-      </header>
-
-      <main className="app-main">
+      <main id="main-content" className="app-main" tabIndex={-1}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
@@ -56,6 +32,7 @@ export default function App() {
           <Route path="/sponsors" element={<SponsorsPage />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/styleguide" element={<StyleguidePage />} />
         </Routes>
       </main>
 

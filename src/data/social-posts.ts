@@ -22,7 +22,7 @@ export type SocialPost = {
   url?: string;
 };
 
-const INSTAGRAM_PROFILE_URL = "https://www.instagram.com/ignium_motorsport/";
+export const INSTAGRAM_PROFILE_URL = "https://www.instagram.com/ignium_motorsport/";
 
 export const socialPosts: SocialPost[] = [
   { id: "1", imageUrl: "/news-covers/instagram-are-you-ready-march-2025.jpg", caption: "Are you ready — March 2025", url: INSTAGRAM_PROFILE_URL },
