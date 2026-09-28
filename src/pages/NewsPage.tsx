@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getNews } from "../lib/api";
+import { formatSplitDate } from "../lib/format";
+import { useInView } from "../hooks/useInView";
 import type { NewsPost } from "../lib/types";
 
 export function NewsPage() {
   const [posts, setPosts] = useState<NewsPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [gridRef, gridInView] = useInView<HTMLDivElement>();
 
   useEffect(() => {
     let mounted = true;
@@ -25,11 +28,13 @@ export function NewsPage() {
     };
   }, []);
 
+  const [feature, ...rest] = posts;
+
   return (
     <>
-      <section className="section compact subpage-hero">
+      <section className="subpage-hero">
         <div className="page-shell">
-          <div className="eyebrow">Team Updates</div>
+          <span className="eyebrow">— Team Updates</span>
           <h1 className="subpage-title">News</h1>
           <p className="subpage-intro">
             Race reports, announcements, and behind-the-scenes updates from Ignium Motorsport.
@@ -60,35 +65,35 @@ export function NewsPage() {
             </div>
           ) : null}
 
-          {!loading && !error && posts.length > 0 ? (
-            <div className="news-grid">
-              {posts.map((post) => (
-                <article
-                  key={post.id}
-                  className={`news-card${post.coverImageUrl ? " news-card--photo" : ""}`}
-                  style={
-                    post.coverImageUrl
-                      ? {
-                          backgroundImage: `linear-gradient(180deg, transparent 0%, rgba(7, 17, 29, 0.88) 68%), radial-gradient(circle at 80% 0%, rgba(0, 184, 248, 0.16), transparent 35%), url(${post.coverImageUrl})`,
-                          backgroundSize: "auto, auto, cover",
-                          backgroundPosition: "center, center, center",
-                        }
-                      : undefined
-                  }
-                >
-                  <div className="news-meta">
-                    {post.author ?? "Ignium Motorsport"}
-                    {post.publishedAt ? ` • ${new Date(post.publishedAt).toLocaleDateString()}` : ""}
-                  </div>
-                  <h3>{post.title}</h3>
-                  <p>{post.excerpt ?? "Read the full update."}</p>
-                  <div className="button-row">
-                    <Link className="button-secondary" to={`/news/${post.slug}`}>
-                      Read Article
+          {!loading && !error && feature ? (
+            <div ref={gridRef} className={`fade-up${gridInView ? " is-in" : ""}`}>
+              <Link
+                to={`/news/${feature.slug}`}
+                className={`article-card article-card--feature${feature.coverImageUrl ? "" : " no-image-card"}`}
+              >
+                {feature.coverImageUrl && <img src={feature.coverImageUrl} alt="" loading="lazy" />}
+                <span className="article-tag-latest">Latest</span>
+                {feature.publishedAt && <span className="split-date">{formatSplitDate(feature.publishedAt)}</span>}
+                <h3>{feature.title}</h3>
+                <p>{feature.excerpt}</p>
+              </Link>
+
+              {rest.length > 0 && (
+                <div className="article-grid" style={{ marginTop: 24 }}>
+                  {rest.map((post) => (
+                    <Link
+                      key={post.id}
+                      to={`/news/${post.slug}`}
+                      className={`article-card${post.coverImageUrl ? "" : " no-image-card"}`}
+                    >
+                      {post.coverImageUrl && <img src={post.coverImageUrl} alt="" loading="lazy" />}
+                      {post.publishedAt && <span className="split-date">{formatSplitDate(post.publishedAt)}</span>}
+                      <h3>{post.title}</h3>
+                      <p>{post.excerpt}</p>
                     </Link>
-                  </div>
-                </article>
-              ))}
+                  ))}
+                </div>
+              )}
             </div>
           ) : null}
         </div>

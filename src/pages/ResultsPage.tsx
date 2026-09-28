@@ -1,70 +1,67 @@
 import { championships } from "../data/championships";
 import { results } from "../data/results";
+import { ResultsTable } from "../components/ResultsTable";
+import { sortResultsByDateDesc } from "../lib/results";
+import { useInView } from "../hooks/useInView";
 
 export function ResultsPage() {
+  const [resultsRef, resultsInView] = useInView<HTMLDivElement>();
+  const [champsRef, champsInView] = useInView<HTMLDivElement>();
+  const sortedResults = sortResultsByDateDesc(results);
+
   return (
     <>
-      <section className="section compact subpage-hero">
+      <section className="subpage-hero">
         <div className="page-shell">
-          <div className="eyebrow">Performance Data</div>
+          <span className="eyebrow">— Performance Data</span>
           <h1 className="subpage-title">Results &amp; Championships</h1>
-          <p className="subpage-intro">A hand-updated record of recent race results, and the leagues we currently compete in.</p>
+          <p className="subpage-intro">
+            A hand-updated record of recent race results, and the leagues we currently compete in.
+          </p>
         </div>
       </section>
 
       <section className="section compact">
         <div className="page-shell">
-          <div className="section-header">
-            <h2>Recent Results</h2>
+          <div ref={resultsRef} className={`fade-up${resultsInView ? " is-in" : ""}`}>
+            <div className="section-header">
+              <h2>Recent Results</h2>
+            </div>
+            {sortedResults.length === 0 ? (
+              <div className="empty-state">
+                <h3>No Results Yet</h3>
+                <p>There are no race results available at the moment.</p>
+              </div>
+            ) : (
+              <ResultsTable results={sortedResults} />
+            )}
           </div>
-          {results.length === 0 ? (
-            <div className="empty-state">
-              <h3>No Results Yet</h3>
-              <p>There are no race results available at the moment.</p>
-            </div>
-          ) : (
-            <div className="news-grid">
-              {results.map((result) => (
-                <article key={result.id} className="news-card">
-                  <div className="news-meta">{result.series}</div>
-                  <h3>{result.track}</h3>
-                  <p>
-                    {new Date(result.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                    {result.finish ? ` · ${result.finish}` : ""}
-                  </p>
-                  {result.note ? <p>{result.note}</p> : null}
-                  {result.instagramUrl ? (
-                    <a href={result.instagramUrl} target="_blank" rel="noopener noreferrer">
-                      View on Instagram
-                    </a>
-                  ) : null}
-                </article>
-              ))}
-            </div>
-          )}
         </div>
       </section>
 
       <section className="section compact">
         <div className="page-shell">
-          <div className="section-header">
-            <h2>Championships &amp; Ladders</h2>
-          </div>
-          <div className="news-grid">
+          <div ref={champsRef} className={`fade-up${champsInView ? " is-in" : ""}`}>
+            <div className="section-header">
+              <h2>Championships &amp; Ladders</h2>
+            </div>
             {championships.map((championship) => (
-              <article key={championship.name} className="news-card">
-                <h3>{championship.name}</h3>
-                {championship.description ? <p>{championship.description}</p> : null}
-                {championship.url ? (
-                  <a href={championship.url} target="_blank" rel="noopener noreferrer">
-                    Learn more
-                  </a>
-                ) : null}
-              </article>
+              <div key={championship.name} className="series-entry-row">
+                <div>
+                  <h3>{championship.name}</h3>
+                  {championship.description ? <p>{championship.description}</p> : null}
+                </div>
+                <div>
+                  <span className="series-entry-platform">iRacing</span>
+                  {championship.url ? (
+                    <p>
+                      <a href={championship.url} target="_blank" rel="noopener noreferrer">
+                        Learn more ↗
+                      </a>
+                    </p>
+                  ) : null}
+                </div>
+              </div>
             ))}
           </div>
         </div>

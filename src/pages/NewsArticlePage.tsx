@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getNewsArticle } from "../lib/api";
+import { formatSplitDate } from "../lib/format";
 import type { NewsPost } from "../lib/types";
 
 export function NewsArticlePage() {
@@ -30,7 +31,7 @@ export function NewsArticlePage() {
   return (
     <section className="section compact">
       <div className="page-shell">
-        <div className="button-row" style={{ marginTop: 0, marginBottom: 18 }}>
+        <div className="button-row" style={{ marginTop: 0, marginBottom: 32 }}>
           <Link className="button-ghost" to="/news">
             Back To News
           </Link>
@@ -51,19 +52,13 @@ export function NewsArticlePage() {
         ) : null}
 
         {post ? (
-          <article className="panel article-shell">
-            <div className="eyebrow">News Article</div>
+          <article className="article-shell">
+            <span className="eyebrow">— News Article</span>
             <h1 className="subpage-title">{post.title}</h1>
 
             <p className="data-caption">
-              {post.author ? `By ${post.author}` : "Ignium Motorsport"}
-              {post.publishedAt
-                ? ` • ${new Date(post.publishedAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}`
-                : ""}
+              {post.author ?? "Ignium Motorsport"}
+              {post.publishedAt ? ` · ${formatSplitDate(post.publishedAt)}` : ""}
             </p>
 
             {post.coverImageUrl ? (
