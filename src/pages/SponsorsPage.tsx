@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { sponsors } from "../data/sponsors";
 import { LiveryDiagram } from "../components/LiveryDiagram";
 import { useInView } from "../hooks/useInView";
+import { usePageMeta } from "../hooks/usePageMeta";
 
 const LIVERY_SPECS = [
   { number: 1, area: "Bonnet", detail: "Primary logo placement — the largest, most visible spot on the car." },
@@ -11,6 +12,11 @@ const LIVERY_SPECS = [
 ];
 
 export function SponsorsPage() {
+  usePageMeta(
+    "Sponsors & Partners | Ignium Motorsport",
+    "Ignium Motorsport is proud to work with sponsors and partners who share our commitment to hard work, dedication, and positivity."
+  );
+
   const [wallRef, wallInView] = useInView<HTMLDivElement>();
   const [liveryRef, liveryInView] = useInView<HTMLDivElement>();
 

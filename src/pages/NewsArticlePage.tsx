@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getNewsArticle } from "../lib/api";
 import { formatSplitDate } from "../lib/format";
+import { usePageMeta } from "../hooks/usePageMeta";
 import type { NewsPost } from "../lib/types";
 
 export function NewsArticlePage() {
@@ -9,6 +10,11 @@ export function NewsArticlePage() {
   const [post, setPost] = useState<NewsPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  usePageMeta(
+    post ? `${post.title} | Ignium Motorsport` : "News Article | Ignium Motorsport",
+    post?.excerpt ?? "Read the latest update from Ignium Motorsport."
+  );
 
   useEffect(() => {
     let mounted = true;

@@ -3,9 +3,15 @@ import { Link } from "react-router-dom";
 import { getNews } from "../lib/api";
 import { formatSplitDate } from "../lib/format";
 import { useInView } from "../hooks/useInView";
+import { usePageMeta } from "../hooks/usePageMeta";
 import type { NewsPost } from "../lib/types";
 
 export function NewsPage() {
+  usePageMeta(
+    "News | Ignium Motorsport",
+    "Race reports, announcements, and behind-the-scenes updates from Ignium Motorsport."
+  );
+
   const [posts, setPosts] = useState<NewsPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

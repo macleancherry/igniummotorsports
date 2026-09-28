@@ -1,9 +1,12 @@
 import { shopItems } from "../data/shop";
 import { useInView } from "../hooks/useInView";
+import { usePageMeta } from "../hooks/usePageMeta";
 
 const SIZES = ["S", "M", "L", "XL", "XXL"];
 
 export function ShopPage() {
+  usePageMeta("Shop | Ignium Motorsport", "A preview of upcoming Ignium Motorsport merch — orders aren't open yet.");
+
   const [gridRef, gridInView] = useInView<HTMLDivElement>();
 
   return (

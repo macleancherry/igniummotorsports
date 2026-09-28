@@ -3,8 +3,14 @@ import { results } from "../data/results";
 import { ResultsTable } from "../components/ResultsTable";
 import { sortResultsByDateDesc } from "../lib/results";
 import { useInView } from "../hooks/useInView";
+import { usePageMeta } from "../hooks/usePageMeta";
 
 export function ResultsPage() {
+  usePageMeta(
+    "Results & Championships | Ignium Motorsport",
+    "A hand-updated record of recent race results, and the leagues we currently compete in."
+  );
+
   const [resultsRef, resultsInView] = useInView<HTMLDivElement>();
   const [champsRef, champsInView] = useInView<HTMLDivElement>();
   const sortedResults = sortResultsByDateDesc(results);

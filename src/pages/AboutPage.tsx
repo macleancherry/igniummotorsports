@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { roster } from "../data/roster";
 import { useInView } from "../hooks/useInView";
+import { usePageMeta } from "../hooks/usePageMeta";
 
 const VALUES = [
   {
@@ -21,6 +22,11 @@ const VALUES = [
 ];
 
 export function AboutPage() {
+  usePageMeta(
+    "About | Ignium Motorsport",
+    "Ignium Motorsport is an iRacing endurance team built on three core morals: hard work, dedication, and positivity. We are committed to continuous improvement, professional conduct, and bringing passion to every lap."
+  );
+
   const [valuesRef, valuesInView] = useInView<HTMLDivElement>();
   const [rosterRef, rosterInView] = useInView<HTMLDivElement>();
   const [missionRef, missionInView] = useInView<HTMLDivElement>();

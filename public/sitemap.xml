@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Hand-maintained sitemap — no generator is wired into the build.
+  Lists the static routes only; /styleguide (unlinked, dev-only) and the
+  D1-backed /news/:slug article URLs are intentionally left out.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://igniummotorsports.com/</loc></url>
+  <url><loc>https://igniummotorsports.com/about</loc></url>
+  <url><loc>https://igniummotorsports.com/news</loc></url>
+  <url><loc>https://igniummotorsports.com/results</loc></url>
+  <url><loc>https://igniummotorsports.com/sponsors</loc></url>
+  <url><loc>https://igniummotorsports.com/shop</loc></url>
+  <url><loc>https://igniummotorsports.com/contact</loc></url>
+</urlset>

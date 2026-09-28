@@ -1,6 +1,12 @@
 import { SocialLinksList } from "../components/SocialLinksList";
+import { usePageMeta } from "../hooks/usePageMeta";
 
 export function ContactPage() {
+  usePageMeta(
+    "Contact Us | Ignium Motorsport",
+    "For sponsorship, partnership, or commercial enquiries, reach out and we'll get back to you."
+  );
+
   return (
     <>
       <section className="subpage-hero">

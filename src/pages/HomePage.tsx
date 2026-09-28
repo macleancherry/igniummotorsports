@@ -7,11 +7,17 @@ import { socialPosts } from "../data/social-posts";
 import { ResultsTable } from "../components/ResultsTable";
 import { formatResultDate } from "../lib/results";
 import { useInView } from "../hooks/useInView";
+import { usePageMeta } from "../hooks/usePageMeta";
 import type { NewsPost } from "../lib/types";
 
 const HERO_WORDS = ["Ignite", "Your", "Passion"];
 
 export function HomePage() {
+  usePageMeta(
+    "Ignium Motorsport | Ignite Your Passion",
+    "Ignium Motorsport competes on three core values: Hard Work, Dedication, and Positivity. We race with discipline, integrity, and the drive to excel."
+  );
+
   const [news, setNews] = useState<NewsPost[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isRevealed, setIsRevealed] = useState(false);
