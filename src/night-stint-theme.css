@@ -134,6 +134,7 @@ h4 {
   text-transform: uppercase;
   letter-spacing: -0.01em;
   line-height: 0.98;
+  overflow-wrap: break-word;
 }
 
 h1 {
@@ -231,6 +232,10 @@ p {
   margin-bottom: 40px;
 }
 
+.section-header h2 {
+  min-width: 0;
+}
+
 .eyebrow {
   display: block;
   margin-bottom: 14px;
@@ -277,13 +282,17 @@ p {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-dim);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .timing-strip-inner a {
   color: var(--ignium);
+}
+
+.timing-strip-message {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .timing-strip-dot {
@@ -661,6 +670,7 @@ p {
 
 .subpage-title {
   margin-top: 8px;
+  font-size: var(--text-section);
 }
 
 .subpage-intro {

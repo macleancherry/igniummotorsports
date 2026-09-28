@@ -20,7 +20,7 @@ export function StyleguidePage() {
     <div className="section">
       <div className="page-shell">
         <span className="eyebrow">— Dev Reference</span>
-        <h1>Night Stint Styleguide</h1>
+        <h1 className="subpage-title">Night Stint Styleguide</h1>
         <p style={{ marginBottom: 48 }}>
           Type scale, color tokens, and component samples for the Night Stint design system. Not linked from site
           navigation.

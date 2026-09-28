@@ -10,7 +10,7 @@ export function TimingStrip() {
       <div className="timing-strip">
         <div className="timing-strip-inner">
           <span className="timing-strip-dot" aria-hidden="true" />
-          <span>
+          <span className="timing-strip-message">
             LIVE NOW · {nextRace.seriesLabel} · {nextRace.event}
             {nextRace.watchUrl && (
               <>
@@ -30,7 +30,7 @@ export function TimingStrip() {
     return (
       <div className="timing-strip">
         <div className="timing-strip-inner">
-          <span>
+          <span className="timing-strip-message">
             NEXT · {nextRace.seriesLabel} · {nextRace.event} · {countdown}
             {nextRace.watchUrl && (
               <>
@@ -49,7 +49,7 @@ export function TimingStrip() {
   return (
     <div className="timing-strip">
       <div className="timing-strip-inner">
-        <span>
+        <span className="timing-strip-message">
           OFF-SEASON · FOLLOW THE TEAM ON{" "}
           <a href={INSTAGRAM_PROFILE_URL} target="_blank" rel="noopener noreferrer">
             INSTAGRAM ↗
