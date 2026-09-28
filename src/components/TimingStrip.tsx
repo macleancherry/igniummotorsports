@@ -1,4 +1,4 @@
-import { INSTAGRAM_PROFILE_URL } from "../data/social-posts";
+import { INSTAGRAM_PROFILE_URL } from "../lib/social-links";
 import { nextRace } from "../data/schedule";
 import { useCountdown } from "../hooks/useCountdown";
 

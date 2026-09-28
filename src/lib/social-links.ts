@@ -4,6 +4,8 @@ export type SocialLink = {
   url: string;
 };
 
+export const INSTAGRAM_PROFILE_URL = "https://www.instagram.com/ignium_motorsport/";
+
 export const socialLinks: SocialLink[] = [
   { platform: "Instagram", handle: "@ignium_motorsport", url: "https://www.instagram.com/ignium_motorsport" },
   { platform: "YouTube", handle: "@igniummotorsport", url: "https://www.youtube.com/@igniummotorsport" },

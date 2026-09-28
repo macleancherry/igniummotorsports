@@ -14,3 +14,10 @@ export type NewsPost = {
 export type Garage61Status = {
   activeDrivers: Array<{ name: string }>;
 };
+
+export type SocialPost = {
+  id: string;
+  imageUrl: string;
+  caption?: string;
+  url?: string;
+};
