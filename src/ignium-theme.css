@@ -717,8 +717,8 @@ p {
   position: absolute;
   left: -4vw;
   right: -4vw;
-  top: calc(-48px - 3vw);
-  height: calc(48px + 3vw);
+  top: -32px;
+  height: 80px;
   background: var(--ignium-navy);
   border-bottom: 2px solid var(--ignium-blue);
   transform: skewY(-1.2deg);
@@ -863,7 +863,7 @@ p {
   height: calc(48px + 3vw);
   background: var(--ignium-body-bg);
   border-top: 2px solid var(--ignium-blue);
-  transform: skewY(-1.2deg);
+  transform: skewY(-0.4deg);
   transform-origin: left top;
   z-index: 2;
 }
