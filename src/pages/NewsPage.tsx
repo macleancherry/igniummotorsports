@@ -65,11 +65,11 @@ export function NewsPage() {
               {posts.map((post) => (
                 <article
                   key={post.id}
-                  className="news-card"
+                  className={`news-card${post.coverImageUrl ? " news-card--photo" : ""}`}
                   style={
                     post.coverImageUrl
                       ? {
-                          backgroundImage: `linear-gradient(180deg, transparent 0%, rgba(3, 6, 9, 0.88) 68%), radial-gradient(circle at 80% 0%, rgba(0, 184, 248, 0.16), transparent 35%), url(${post.coverImageUrl})`,
+                          backgroundImage: `linear-gradient(180deg, transparent 0%, rgba(7, 17, 29, 0.88) 68%), radial-gradient(circle at 80% 0%, rgba(0, 184, 248, 0.16), transparent 35%), url(${post.coverImageUrl})`,
                           backgroundSize: "auto, auto, cover",
                           backgroundPosition: "center, center, center",
                         }

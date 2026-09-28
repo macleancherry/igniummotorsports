@@ -1,3 +1,4 @@
+import { championships } from "../data/championships";
 import { results } from "../data/results";
 
 export function ResultsPage() {
@@ -6,13 +7,16 @@ export function ResultsPage() {
       <section className="section compact subpage-hero">
         <div className="page-shell">
           <div className="eyebrow">Performance Data</div>
-          <h1 className="subpage-title">Recent Team Results</h1>
-          <p className="subpage-intro">A hand-updated record of recent race results.</p>
+          <h1 className="subpage-title">Results &amp; Championships</h1>
+          <p className="subpage-intro">A hand-updated record of recent race results, and the leagues we currently compete in.</p>
         </div>
       </section>
 
       <section className="section compact">
         <div className="page-shell">
+          <div className="section-header">
+            <h2>Recent Results</h2>
+          </div>
           {results.length === 0 ? (
             <div className="empty-state">
               <h3>No Results Yet</h3>
@@ -42,6 +46,27 @@ export function ResultsPage() {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      <section className="section compact">
+        <div className="page-shell">
+          <div className="section-header">
+            <h2>Championships &amp; Ladders</h2>
+          </div>
+          <div className="news-grid">
+            {championships.map((championship) => (
+              <article key={championship.name} className="news-card">
+                <h3>{championship.name}</h3>
+                {championship.description ? <p>{championship.description}</p> : null}
+                {championship.url ? (
+                  <a href={championship.url} target="_blank" rel="noopener noreferrer">
+                    Learn more
+                  </a>
+                ) : null}
+              </article>
+            ))}
+          </div>
         </div>
       </section>
     </>

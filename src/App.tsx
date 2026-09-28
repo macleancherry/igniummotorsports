@@ -1,21 +1,22 @@
 import { Link, NavLink, Route, Routes } from "react-router-dom";
+import { Footer } from "./components/Footer";
 import { Garage61Badge } from "./components/Garage61Badge";
 import { AboutPage } from "./pages/AboutPage";
-import { ChampionshipsPage } from "./pages/ChampionshipsPage";
 import { ContactPage } from "./pages/ContactPage";
 import { HomePage } from "./pages/HomePage";
 import { NewsArticlePage } from "./pages/NewsArticlePage";
 import { NewsPage } from "./pages/NewsPage";
 import { ResultsPage } from "./pages/ResultsPage";
+import { ShopPage } from "./pages/ShopPage";
 import { SponsorsPage } from "./pages/SponsorsPage";
 
 const navItems = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
   { to: "/news", label: "News" },
-  { to: "/championships", label: "Championships" },
   { to: "/results", label: "Results" },
   { to: "/sponsors", label: "Sponsors" },
+  { to: "/shop", label: "Shop" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -51,12 +52,14 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/:slug" element={<NewsArticlePage />} />
-          <Route path="/championships" element={<ChampionshipsPage />} />
           <Route path="/results" element={<ResultsPage />} />
           <Route path="/sponsors" element={<SponsorsPage />} />
+          <Route path="/shop" element={<ShopPage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </main>
+
+      <Footer />
     </div>
   );
 }
