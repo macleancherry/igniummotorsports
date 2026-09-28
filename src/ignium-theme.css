@@ -431,14 +431,13 @@ p {
 .hero::after {
   content: "";
   position: absolute;
-  left: -4vw;
-  right: -4vw;
-  bottom: calc(-128px - 12vw);
-  height: calc(138px + 12vw);
+  left: 0;
+  right: 0;
+  bottom: -130px;
+  height: 130px;
   background: var(--ignium-body-bg);
-  border-top: 2px solid var(--ignium-blue);
-  transform: skewY(-4.2deg);
-  transform-origin: left top;
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  filter: drop-shadow(0 -2px 0 var(--ignium-blue));
   z-index: 2;
 }
 
@@ -715,14 +714,13 @@ p {
 .site-footer::before {
   content: "";
   position: absolute;
-  left: -4vw;
-  right: -4vw;
-  top: -32px;
-  height: 80px;
+  left: 0;
+  right: 0;
+  top: -28px;
+  height: 28px;
   background: var(--ignium-navy);
-  border-bottom: 2px solid var(--ignium-blue);
-  transform: skewY(-1.2deg);
-  transform-origin: right bottom;
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  filter: drop-shadow(0 -2px 0 var(--ignium-blue));
   z-index: 0;
 }
 
@@ -857,14 +855,13 @@ p {
 .subpage-hero::after {
   content: "";
   position: absolute;
-  left: -4vw;
-  right: -4vw;
-  bottom: calc(-48px - 3vw);
-  height: calc(48px + 3vw);
+  left: 0;
+  right: 0;
+  bottom: -24px;
+  height: 24px;
   background: var(--ignium-body-bg);
-  border-top: 2px solid var(--ignium-blue);
-  transform: skewY(-0.4deg);
-  transform-origin: left top;
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  filter: drop-shadow(0 -2px 0 var(--ignium-blue));
   z-index: 2;
 }
 
